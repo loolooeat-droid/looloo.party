@@ -248,13 +248,17 @@
     }
 
     .hint {
-      margin-top: 28px;
+      margin-top: 30px;
 
-      font-size: 10px;
+      font-size: 12px;
 
-      letter-spacing: 0.12em;
+      font-weight: 400;
 
-      color: rgba(238, 233, 220, 0.4);
+      letter-spacing: 0.18em;
+
+      text-transform: uppercase;
+
+      color: #b4a476;
 
       opacity: 0;
 
@@ -728,6 +732,12 @@
         margin-bottom: 40px;
       }
 
+      .hint {
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        line-height: 1.5;
+      }
+
       .details-inner {
         padding:
           70px 15px 45px;
@@ -772,7 +782,9 @@
       .field {
         margin-bottom: 16px;
       }
+
     }
+
   </style>
 </head>
 
@@ -781,6 +793,7 @@
   <main class="page">
 
     <div class="glow"></div>
+
 
     <!-- LANGUAGE SWITCHER -->
 
@@ -829,7 +842,7 @@
       <div
         class="secret"
         data-i18n="privateInvitation">
-        Private invitation
+        ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ
       </div>
 
       <h1>
@@ -845,13 +858,13 @@
         class="enter"
         onclick="enterParty()"
         data-i18n="enter">
-        ENTER
+        ВОЙТИ
       </button>
 
       <div
         class="hint"
         data-i18n="clientsOnly">
-        Только для наших клиентов
+        ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ
       </div>
 
     </section>
@@ -886,7 +899,7 @@
             class="event-description"
             data-i18n="eventDescription">
             Ночная вечеринка LooLoo.<br><br>
-            Вход только для наших клиентов.<br>
+            Вход только для наших гостей.<br>
             Никакого dress code.
           </p>
 
@@ -1039,7 +1052,7 @@
           <div
             class="private"
             data-i18n="privateEvent">
-            Private event · LooLoo
+            Закрытое мероприятие · LooLoo
           </div>
 
         </div>
@@ -1060,13 +1073,14 @@
           <h2
             class="success-title"
             data-i18n="successTitle">
-            Готово.
+            Ты в списке.
           </h2>
 
           <p
             class="success-text"
             data-i18n="successText">
-            Ты в списке.<br>
+            Спасибо, что подтвердил своё присутствие.<br><br>
+            <b>Накануне вечеринки мы пришлём тебе адрес и всю необходимую информацию.</b><br><br>
             До встречи 20 сентября.
           </p>
 
@@ -1094,7 +1108,7 @@
     ========================================== */
 
     const SCRIPT_URL =
-      "https://script.google.com/macros/s/AKfycbxx2uuwGsr_3Ak7nbI4ihyKhCIfZZFzIcaA6Du3iySEmecQ54yPBwyp-BEO_AEY6Eyyhg/exec";
+      "https://script.google.com/macros/s/AKfycbyKfaYfRHtBul559DctOqobdZo5JLartukqbXm9r5I3Bmd_A8mzA7TuhsuqR0s2q03h/exec";
 
 
     /* ==========================================
@@ -1106,19 +1120,19 @@
       ru: {
 
         privateInvitation:
-          "Private invitation",
+          "ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ",
 
         clientsOnly:
-          "Только для наших клиентов",
+          "ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ",
 
         enter:
-          "ENTER",
+          "ВОЙТИ",
 
         youAreOnList:
           "Ты в списке.",
 
         eventDescription:
-          "Ночная вечеринка LooLoo.<br><br>Вход только для наших клиентов.<br>Никакого dress code.",
+          "Ночная вечеринка LooLoo.<br><br>Вход только для наших гостей.<br>Никакого dress code.",
 
         date:
           "Дата",
@@ -1148,13 +1162,13 @@
           "ПОДТВЕРДИТЬ",
 
         privateEvent:
-          "Private event · LooLoo",
+          "Закрытое мероприятие · LooLoo",
 
         successTitle:
-          "Готово.",
+          "Ты в списке.",
 
         successText:
-          "Ты в списке.<br>До встречи 20 сентября.",
+          "Спасибо, что подтвердил своё присутствие.<br><br><b>Накануне вечеринки мы пришлём тебе адрес и всю необходимую информацию.</b><br><br>До встречи 20 сентября.",
 
         back:
           "← назад",
@@ -1171,10 +1185,10 @@
       en: {
 
         privateInvitation:
-          "Private invitation",
+          "FOR OUR GUESTS ONLY",
 
         clientsOnly:
-          "For our clients only",
+          "FOR OUR GUESTS ONLY",
 
         enter:
           "ENTER",
@@ -1183,7 +1197,7 @@
           "You're on the list.",
 
         eventDescription:
-          "LooLoo night party.<br><br>Entry for our clients only.<br>No dress code.",
+          "LooLoo night party.<br><br>Entry for our guests only.<br>No dress code.",
 
         date:
           "Date",
@@ -1216,10 +1230,10 @@
           "Private event · LooLoo",
 
         successTitle:
-          "Done.",
+          "You're on the list.",
 
         successText:
-          "You're on the list.<br>See you on September 20.",
+          "Thank you for confirming your attendance.<br><br><b>We'll send you the address and all the details the day before the party.</b><br><br>See you on September 20.",
 
         back:
           "← back",
@@ -1236,10 +1250,10 @@
       hy: {
 
         privateInvitation:
-          "Գաղտնի հրավեր",
+          "ՄԻԱՅՆ ՄԵՐ ՀՅՈՒՐԵՐԻ ՀԱՄԱՐ",
 
         clientsOnly:
-          "Միայն մեր հաճախորդների համար",
+          "ՄԻԱՅՆ ՄԵՐ ՀՅՈՒՐԵՐԻ ՀԱՄԱՐ",
 
         enter:
           "ՄՈՒՏՔ",
@@ -1248,7 +1262,7 @@
           "Դու ցուցակում ես։",
 
         eventDescription:
-          "LooLoo-ի գիշերային երեկույթ։<br><br>Մուտքը միայն մեր հաճախորդների համար է։<br>Դրես կոդ չկա։",
+          "LooLoo-ի գիշերային երեկույթ։<br><br>Մուտքը միայն մեր հյուրերի համար է։<br>Դրես կոդ չկա։",
 
         date:
           "Ամսաթիվ",
@@ -1278,13 +1292,13 @@
           "ՀԱՍՏԱՏԵԼ",
 
         privateEvent:
-          "Private event · LooLoo",
+          "Փակ միջոցառում · LooLoo",
 
         successTitle:
-          "Պատրաստ է։",
+          "Դու ցուցակում ես։",
 
         successText:
-          "Դու ցուցակում ես։<br>Կհանդիպենք սեպտեմբերի 20-ին։",
+          "Շնորհակալություն ներկայությունդ հաստատելու համար։<br><br><b>Երեկույթի նախորդ օրը քեզ կուղարկենք հասցեն և բոլոր անհրաժեշտ մանրամասները։</b><br><br>Կհանդիպենք սեպտեմբերի 20-ին։",
 
         back:
           "← հետ",
@@ -1322,13 +1336,13 @@
       currentLanguage = lang;
 
       document.documentElement.lang =
-        lang === "hy" ? "hy" : lang;
+        lang === "hy"
+          ? "hy"
+          : lang;
 
       const dictionary =
         translations[lang];
 
-
-      /* TEXT */
 
       document
         .querySelectorAll("[data-i18n]")
@@ -1337,7 +1351,9 @@
           const key =
             element.dataset.i18n;
 
-          if (dictionary[key] !== undefined) {
+          if (
+            dictionary[key] !== undefined
+          ) {
 
             element.innerHTML =
               dictionary[key];
@@ -1347,8 +1363,6 @@
         });
 
 
-      /* PLACEHOLDERS */
-
       document
         .querySelectorAll("[data-placeholder]")
         .forEach(element => {
@@ -1356,7 +1370,9 @@
           const key =
             element.dataset.placeholder;
 
-          if (dictionary[key] !== undefined) {
+          if (
+            dictionary[key] !== undefined
+          ) {
 
             element.placeholder =
               dictionary[key];
@@ -1365,8 +1381,6 @@
 
         });
 
-
-      /* ACTIVE LANGUAGE */
 
       document
         .querySelectorAll(".language")
@@ -1432,7 +1446,176 @@
 
       document
         .getElementById("guestNumber")
-        .textContent = guestCount;
+        .textContent =
+        guestCount;
+
+    }
+
+
+    /* ==========================================
+       SEND TO GOOGLE APPS SCRIPT
+    ========================================== */
+
+    function sendToTelegram(data) {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const callbackName =
+            "telegramCallback_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+              Math.random() * 100000
+            );
+
+
+          const script =
+            document.createElement("script");
+
+
+          let finished = false;
+
+
+          const cleanup = () => {
+
+            if (script.parentNode) {
+
+              script.parentNode.removeChild(
+                script
+              );
+
+            }
+
+            try {
+
+              delete window[callbackName];
+
+            } catch (e) {
+
+              window[callbackName] =
+                undefined;
+
+            }
+
+          };
+
+
+          const timeout =
+            setTimeout(() => {
+
+              if (finished) {
+                return;
+              }
+
+              finished = true;
+
+              cleanup();
+
+              reject(
+                new Error(
+                  "Request timeout"
+                )
+              );
+
+            }, 15000);
+
+
+          window[callbackName] =
+            function(response) {
+
+              if (finished) {
+                return;
+              }
+
+              finished = true;
+
+              clearTimeout(timeout);
+
+              cleanup();
+
+
+              if (
+                response &&
+                response.success === true
+              ) {
+
+                resolve(response);
+
+              } else {
+
+                reject(
+                  new Error(
+                    response &&
+                    response.error
+                      ? response.error
+                      : "Telegram error"
+                  )
+                );
+
+              }
+
+            };
+
+
+          const params =
+            new URLSearchParams({
+
+              name:
+                data.name,
+
+              phone:
+                data.phone,
+
+              guests:
+                String(data.guests),
+
+              language:
+                data.language,
+
+              callback:
+                callbackName
+
+            });
+
+
+          script.src =
+            SCRIPT_URL +
+            "?" +
+            params.toString();
+
+
+          script.async = true;
+
+
+          script.onerror =
+            function() {
+
+              if (finished) {
+                return;
+              }
+
+              finished = true;
+
+              clearTimeout(timeout);
+
+              cleanup();
+
+              reject(
+                new Error(
+                  "Network error"
+                )
+              );
+
+            };
+
+
+          document.body.appendChild(
+            script
+          );
+
+        }
+      );
 
     }
 
@@ -1447,19 +1630,27 @@
 
 
       const form =
-        document.getElementById("rsvpForm");
+        document.getElementById(
+          "rsvpForm"
+        );
 
       const button =
-        document.getElementById("submitButton");
+        document.getElementById(
+          "submitButton"
+        );
 
       const errorMessage =
-        document.getElementById("errorMessage");
+        document.getElementById(
+          "errorMessage"
+        );
+
 
       const name =
         document
           .getElementById("name")
           .value
           .trim();
+
 
       const phone =
         document
@@ -1468,8 +1659,6 @@
           .trim();
 
 
-      /* RESET ERROR */
-
       errorMessage.classList.remove(
         "active"
       );
@@ -1477,12 +1666,14 @@
       errorMessage.textContent = "";
 
 
-      /* BASIC VALIDATION */
+      /* VALIDATION */
 
       if (!name || !phone) {
 
         errorMessage.textContent =
-          translations[currentLanguage].error;
+          translations[
+            currentLanguage
+          ].error;
 
         errorMessage.classList.add(
           "active"
@@ -1497,18 +1688,24 @@
       button.disabled = true;
 
       button.textContent =
-        translations[currentLanguage].sending;
+        translations[
+          currentLanguage
+        ].sending;
 
 
       const data = {
 
-        name: name,
+        name:
+          name,
 
-        phone: phone,
+        phone:
+          phone,
 
-        guests: guestCount,
+        guests:
+          guestCount,
 
-        language: currentLanguage
+        language:
+          currentLanguage
 
       };
 
@@ -1516,76 +1713,77 @@
       try {
 
         /*
-          no-cors нужен потому,
-          что Google Apps Script
-          находится на другом домене.
+          Ждём реального ответа
+          от Google Apps Script.
         */
 
-        await fetch(
-          SCRIPT_URL,
-          {
-            method: "POST",
-
-            mode: "no-cors",
-
-            headers: {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
-
-            body: JSON.stringify(data)
-          }
-        );
+        await sendToTelegram(data);
 
 
         /*
-          При no-cors браузер не позволяет
-          прочитать ответ сервера.
-
-          Поэтому после успешной отправки
-          показываем экран подтверждения.
+          Telegram подтвердил
+          получение заявки.
         */
 
         form.style.display =
           "none";
 
+
         document
           .querySelector(".form-title")
-          .style.display = "none";
+          .style.display =
+          "none";
+
 
         document
           .querySelector(".private")
-          .style.display = "none";
+          .style.display =
+          "none";
+
 
         document
           .querySelector(".info")
-          .style.display = "none";
+          .style.display =
+          "none";
+
 
         document
           .querySelector(".event-description")
-          .style.display = "none";
+          .style.display =
+          "none";
+
 
         document
           .querySelector(".welcome")
-          .style.display = "none";
+          .style.display =
+          "none";
 
 
         document
           .getElementById("success")
-          .classList.add("active");
+          .classList.add(
+            "active"
+          );
 
 
       } catch (error) {
 
         console.error(error);
 
+
         button.disabled = false;
 
         button.textContent =
-          translations[currentLanguage].submit;
+          translations[
+            currentLanguage
+          ].submit;
+
 
         errorMessage.textContent =
-          translations[currentLanguage].error;
+          translations[
+            currentLanguage
+          ].error;
+
 
         errorMessage.classList.add(
           "active"
