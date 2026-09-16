@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>LooLoo — Secret Night</title>
 
   <style>
@@ -14,7 +15,8 @@
       padding: 0;
     }
 
-    html, body {
+    html,
+    body {
       width: 100%;
       min-height: 100%;
     }
@@ -26,25 +28,35 @@
       overflow-x: hidden;
     }
 
+    button,
+    input {
+      font-family: inherit;
+    }
+
     .page {
       min-height: 100vh;
+      min-height: 100svh;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 45%, rgba(91, 107, 82, 0.16), transparent 35%),
+        radial-gradient(
+          circle at 50% 45%,
+          rgba(91, 107, 82, 0.16),
+          transparent 35%
+        ),
         #101b16;
     }
 
-    /* лёгкая текстура */
     .page::before {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       opacity: 0.06;
+
       background-image:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
     }
@@ -57,6 +69,7 @@
       background: rgba(173, 150, 91, 0.045);
       filter: blur(90px);
       animation: glow 7s ease-in-out infinite alternate;
+      pointer-events: none;
     }
 
     @keyframes glow {
@@ -64,116 +77,226 @@
         transform: scale(0.9);
         opacity: 0.5;
       }
+
       to {
         transform: scale(1.1);
         opacity: 1;
       }
     }
 
+    /* =========================
+       LANGUAGE SWITCHER
+    ========================= */
+
+    .languages {
+      position: fixed;
+      top: 28px;
+      right: 28px;
+      z-index: 50;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .language {
+      border: 0;
+      background: transparent;
+      color: rgba(238, 233, 220, 0.38);
+
+      font-size: 10px;
+      letter-spacing: 0.12em;
+
+      padding: 5px 2px;
+      cursor: pointer;
+
+      transition:
+        color 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    .language:hover {
+      color: #eee9dc;
+    }
+
+    .language.active {
+      color: #b4a476;
+    }
+
+    .language-divider {
+      width: 1px;
+      height: 11px;
+      background: rgba(238, 233, 220, 0.18);
+    }
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
     .content {
       position: relative;
       z-index: 2;
+
       width: min(90%, 600px);
+
       text-align: center;
-      padding: 40px 20px;
+
+      padding: 50px 20px;
     }
 
     .logo {
       font-size: 27px;
       font-weight: 500;
+
       letter-spacing: 0.22em;
+
       margin-bottom: 70px;
+
       color: #eee9dc;
+
+      opacity: 0;
+
+      animation: appear 1.2s ease forwards;
     }
 
     .secret {
       font-size: 11px;
       letter-spacing: 0.42em;
+
       text-transform: uppercase;
+
       color: #b4a476;
+
       margin-bottom: 25px;
+
       opacity: 0;
-      animation: appear 1.2s ease forwards;
+
+      animation:
+        appear 1.2s ease 0.15s forwards;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
+
       font-size: clamp(55px, 13vw, 105px);
+
       font-weight: 400;
+
       line-height: 0.95;
+
       letter-spacing: -0.04em;
+
       margin-bottom: 35px;
+
       opacity: 0;
-      animation: appear 1.2s ease 0.2s forwards;
+
+      animation:
+        appear 1.2s ease 0.3s forwards;
     }
 
     .date {
       font-size: 15px;
+
       letter-spacing: 0.25em;
+
       color: #c7c0ae;
-      margin-bottom: 55px;
+
+      margin-bottom: 50px;
+
       opacity: 0;
-      animation: appear 1.2s ease 0.45s forwards;
+
+      animation:
+        appear 1.2s ease 0.45s forwards;
     }
 
     .enter {
       appearance: none;
+
       border: 1px solid rgba(180, 164, 118, 0.65);
+
       background: transparent;
+
       color: #eee9dc;
+
       padding: 17px 38px;
+
       min-width: 190px;
-      font-family: 'DM Sans', sans-serif;
+
       font-size: 11px;
+
       letter-spacing: 0.28em;
+
       cursor: pointer;
+
       transition:
         background 0.35s ease,
         color 0.35s ease,
         transform 0.35s ease;
+
       opacity: 0;
-      animation: appear 1.2s ease 0.7s forwards;
+
+      animation:
+        appear 1.2s ease 0.7s forwards;
     }
 
     .enter:hover {
       background: #b4a476;
+
       color: #101b16;
+
       transform: translateY(-2px);
     }
 
     .hint {
       margin-top: 28px;
+
       font-size: 10px;
+
       letter-spacing: 0.12em;
+
       color: rgba(238, 233, 220, 0.4);
+
       opacity: 0;
-      animation: appear 1.2s ease 0.9s forwards;
+
+      animation:
+        appear 1.2s ease 0.9s forwards;
     }
 
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    /* =========================
+       DETAILS SCREEN
+    ========================= */
 
-    /* Вторая страница */
     .details {
-      position: absolute;
+      position: fixed;
+
       inset: 0;
-      z-index: 5;
-      background: #101b16;
+
+      z-index: 20;
+
+      background:
+        radial-gradient(
+          circle at 50% 40%,
+          rgba(91, 107, 82, 0.13),
+          transparent 38%
+        ),
+        #101b16;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       text-align: center;
+
+      overflow-y: auto;
+
       opacity: 0;
+
       visibility: hidden;
+
       transform: translateY(20px);
+
       transition:
         opacity 0.7s ease,
         transform 0.7s ease,
@@ -182,111 +305,472 @@
 
     .details.active {
       opacity: 1;
+
       visibility: visible;
+
       transform: translateY(0);
     }
 
     .details-inner {
-      width: min(90%, 580px);
-      padding: 40px 20px;
+      width: min(92%, 580px);
+
+      padding: 70px 20px 50px;
     }
 
     .small-logo {
       font-size: 20px;
+
       letter-spacing: 0.22em;
-      margin-bottom: 65px;
+
+      margin-bottom: 48px;
     }
 
     .welcome {
       font-family: 'Playfair Display', serif;
+
       font-size: clamp(38px, 9vw, 65px);
+
       font-weight: 400;
+
       line-height: 1.05;
-      margin-bottom: 40px;
+
+      margin-bottom: 32px;
+    }
+
+    .event-description {
+      font-size: 13px;
+
+      line-height: 1.9;
+
+      color: #c7c0ae;
+
+      max-width: 390px;
+
+      margin: 0 auto 32px;
     }
 
     .info {
       display: grid;
+
       grid-template-columns: 1fr 1fr;
+
       gap: 1px;
-      margin: 0 auto 45px;
+
+      margin: 0 auto 42px;
+
       max-width: 430px;
-      border-top: 1px solid rgba(238, 233, 220, 0.15);
-      border-bottom: 1px solid rgba(238, 233, 220, 0.15);
+
+      border-top:
+        1px solid rgba(238, 233, 220, 0.15);
+
+      border-bottom:
+        1px solid rgba(238, 233, 220, 0.15);
     }
 
     .info-item {
-      padding: 25px 10px;
+      padding: 22px 10px;
     }
 
     .info-item + .info-item {
-      border-left: 1px solid rgba(238, 233, 220, 0.15);
+      border-left:
+        1px solid rgba(238, 233, 220, 0.15);
     }
 
     .label {
       display: block;
+
       font-size: 9px;
+
       letter-spacing: 0.3em;
+
       text-transform: uppercase;
+
       color: #b4a476;
+
       margin-bottom: 10px;
     }
 
     .value {
       font-family: 'Playfair Display', serif;
+
       font-size: 24px;
     }
 
-    .description {
-      font-size: 13px;
-      line-height: 1.9;
-      color: #c7c0ae;
-      max-width: 380px;
-      margin: 0 auto 38px;
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+
+      font-size: 28px;
+
+      font-weight: 400;
+
+      margin-bottom: 28px;
+    }
+
+    .form {
+      width: min(100%, 390px);
+
+      margin: 0 auto;
+
+      text-align: left;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+
+      font-size: 9px;
+
+      letter-spacing: 0.25em;
+
+      text-transform: uppercase;
+
+      color: #b4a476;
+
+      margin-bottom: 9px;
+    }
+
+    .field input {
+      width: 100%;
+
+      border: 0;
+
+      border-bottom:
+        1px solid rgba(238, 233, 220, 0.22);
+
+      background: transparent;
+
+      color: #eee9dc;
+
+      outline: none;
+
+      padding: 10px 2px;
+
+      font-size: 15px;
+
+      font-weight: 300;
+
+      transition:
+        border-color 0.25s ease;
+    }
+
+    .field input::placeholder {
+      color: rgba(238, 233, 220, 0.25);
+    }
+
+    .field input:focus {
+      border-color: #b4a476;
+    }
+
+    .guests-control {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      border-bottom:
+        1px solid rgba(238, 233, 220, 0.22);
+
+      padding: 7px 0 9px;
+    }
+
+    .guest-button {
+      width: 38px;
+
+      height: 38px;
+
+      border: 1px solid rgba(180, 164, 118, 0.4);
+
+      border-radius: 50%;
+
+      background: transparent;
+
+      color: #eee9dc;
+
+      font-size: 20px;
+
+      font-weight: 300;
+
+      cursor: pointer;
+
+      transition:
+        background 0.25s ease,
+        color 0.25s ease;
+    }
+
+    .guest-button:hover {
+      background: #b4a476;
+
+      color: #101b16;
+    }
+
+    .guest-number {
+      font-family: 'Playfair Display', serif;
+
+      font-size: 25px;
+    }
+
+    .submit {
+      width: 100%;
+
+      margin-top: 27px;
+
+      padding: 17px 20px;
+
+      border:
+        1px solid rgba(180, 164, 118, 0.65);
+
+      background: transparent;
+
+      color: #eee9dc;
+
+      font-size: 10px;
+
+      letter-spacing: 0.28em;
+
+      cursor: pointer;
+
+      transition:
+        background 0.35s ease,
+        color 0.35s ease,
+        opacity 0.25s ease;
+    }
+
+    .submit:hover:not(:disabled) {
+      background: #b4a476;
+
+      color: #101b16;
+    }
+
+    .submit:disabled {
+      opacity: 0.5;
+
+      cursor: wait;
     }
 
     .private {
-      font-size: 10px;
+      margin-top: 30px;
+
+      font-size: 9px;
+
       letter-spacing: 0.22em;
+
       text-transform: uppercase;
+
+      color: rgba(180, 164, 118, 0.75);
+
+      text-align: center;
+    }
+
+    /* =========================
+       SUCCESS
+    ========================= */
+
+    .success {
+      display: none;
+
+      text-align: center;
+
+      width: min(100%, 420px);
+
+      margin: 0 auto;
+    }
+
+    .success.active {
+      display: block;
+
+      animation:
+        appear 0.7s ease forwards;
+    }
+
+    .success-title {
+      font-family: 'Playfair Display', serif;
+
+      font-size: clamp(40px, 9vw, 62px);
+
+      font-weight: 400;
+
+      line-height: 1.05;
+
+      margin-bottom: 25px;
+    }
+
+    .success-text {
+      color: #c7c0ae;
+
+      font-size: 13px;
+
+      line-height: 1.9;
+
+      margin-bottom: 35px;
+    }
+
+    .success-mark {
+      width: 48px;
+
+      height: 48px;
+
+      border: 1px solid #b4a476;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin: 0 auto 30px;
+
       color: #b4a476;
+
+      font-size: 20px;
+    }
+
+    .error-message {
+      display: none;
+
+      color: #b88b7c;
+
+      font-size: 11px;
+
+      line-height: 1.6;
+
+      text-align: center;
+
+      margin-top: 16px;
+    }
+
+    .error-message.active {
+      display: block;
     }
 
     .back {
-      margin-top: 55px;
+      margin-top: 45px;
+
       border: none;
+
       background: transparent;
-      color: rgba(238, 233, 220, 0.45);
-      font-family: 'DM Sans', sans-serif;
+
+      color: rgba(238, 233, 220, 0.4);
+
       font-size: 9px;
+
       letter-spacing: 0.2em;
+
       text-transform: uppercase;
+
       cursor: pointer;
     }
 
+    /* =========================
+       ANIMATION
+    ========================= */
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
     @media (max-width: 500px) {
+
+      .languages {
+        top: 20px;
+        right: 18px;
+      }
+
+      .content {
+        padding:
+          60px 15px 35px;
+      }
+
       .logo {
-        margin-bottom: 55px;
+        font-size: 24px;
+
+        margin-bottom: 52px;
+      }
+
+      .secret {
+        font-size: 9px;
+
+        letter-spacing: 0.32em;
       }
 
       h1 {
         font-size: 62px;
+
+        margin-bottom: 30px;
       }
 
       .date {
-        margin-bottom: 45px;
+        font-size: 13px;
+
+        margin-bottom: 40px;
       }
 
-      .content {
-        padding: 30px 15px;
+      .details-inner {
+        padding:
+          70px 15px 45px;
       }
 
       .small-logo {
-        margin-bottom: 50px;
+        font-size: 18px;
+
+        margin-bottom: 40px;
+      }
+
+      .welcome {
+        font-size: 43px;
+
+        margin-bottom: 25px;
+      }
+
+      .event-description {
+        font-size: 12px;
+
+        margin-bottom: 27px;
       }
 
       .info {
-        max-width: 350px;
+        margin-bottom: 34px;
+      }
+
+      .info-item {
+        padding: 18px 8px;
+      }
+
+      .value {
+        font-size: 22px;
+      }
+
+      .form-title {
+        font-size: 25px;
+
+        margin-bottom: 24px;
+      }
+
+      .field {
+        margin-bottom: 16px;
       }
     }
   </style>
@@ -298,64 +782,301 @@
 
     <div class="glow"></div>
 
-    <!-- Первый экран -->
-    <section class="content" id="landing">
+    <!-- LANGUAGE SWITCHER -->
 
-      <div class="logo">LOOLOO</div>
+    <div class="languages">
 
-      <div class="secret">Private invitation</div>
+      <button
+        class="language active"
+        data-lang="ru"
+        onclick="setLanguage('ru')">
+        RU
+      </button>
 
-      <h1>Secret<br>Night</h1>
+      <span class="language-divider"></span>
 
-      <div class="date">27.09&nbsp;&nbsp;·&nbsp;&nbsp;21:00</div>
+      <button
+        class="language"
+        data-lang="en"
+        onclick="setLanguage('en')">
+        EN
+      </button>
 
-      <button class="enter" onclick="enterParty()">
+      <span class="language-divider"></span>
+
+      <button
+        class="language"
+        data-lang="hy"
+        onclick="setLanguage('hy')">
+        ՀԱՅ
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         FIRST SCREEN
+    ========================= -->
+
+    <section
+      class="content"
+      id="landing">
+
+      <div class="logo">
+        LOOLOO
+      </div>
+
+      <div
+        class="secret"
+        data-i18n="privateInvitation">
+        Private invitation
+      </div>
+
+      <h1>
+        Secret<br>
+        Night
+      </h1>
+
+      <div class="date">
+        20.09&nbsp;&nbsp;·&nbsp;&nbsp;21:00
+      </div>
+
+      <button
+        class="enter"
+        onclick="enterParty()"
+        data-i18n="enter">
         ENTER
       </button>
 
-      <div class="hint">
+      <div
+        class="hint"
+        data-i18n="clientsOnly">
         Только для наших клиентов
       </div>
 
     </section>
 
-    <!-- Экран с информацией -->
-    <section class="details" id="details">
+
+    <!-- =========================
+         DETAILS
+    ========================= -->
+
+    <section
+      class="details"
+      id="details">
 
       <div class="details-inner">
 
-        <div class="small-logo">LOOLOO</div>
+        <div class="small-logo">
+          LOOLOO
+        </div>
 
-        <h2 class="welcome">
-          Ты в списке.
-        </h2>
 
-        <div class="info">
+        <!-- EVENT CONTENT -->
 
-          <div class="info-item">
-            <span class="label">Дата</span>
-            <span class="value">27.09</span>
+        <div id="eventContent">
+
+          <h2
+            class="welcome"
+            data-i18n="youAreOnList">
+            Ты в списке.
+          </h2>
+
+          <p
+            class="event-description"
+            data-i18n="eventDescription">
+            Ночная вечеринка LooLoo.<br><br>
+            Вход только для наших клиентов.<br>
+            Никакого dress code.
+          </p>
+
+
+          <div class="info">
+
+            <div class="info-item">
+
+              <span
+                class="label"
+                data-i18n="date">
+                Дата
+              </span>
+
+              <span class="value">
+                20.09
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span
+                class="label"
+                data-i18n="start">
+                Начало
+              </span>
+
+              <span class="value">
+                21:00
+              </span>
+
+            </div>
+
           </div>
 
-          <div class="info-item">
-            <span class="label">Начало</span>
-            <span class="value">21:00</span>
+
+          <!-- FORM -->
+
+          <h3
+            class="form-title"
+            data-i18n="confirmAttendance">
+            Подтверди своё присутствие
+          </h3>
+
+
+          <form
+            class="form"
+            id="rsvpForm"
+            onsubmit="submitForm(event)">
+
+            <!-- NAME -->
+
+            <div class="field">
+
+              <label
+                for="name"
+                data-i18n="name">
+                Имя
+              </label>
+
+              <input
+                type="text"
+                id="name"
+                name="name"
+                autocomplete="name"
+                required
+                data-placeholder="namePlaceholder"
+                placeholder="Введите имя">
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="field">
+
+              <label
+                for="phone"
+                data-i18n="phone">
+                Телефон
+              </label>
+
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+                data-placeholder="phonePlaceholder"
+                placeholder="+374 ...">
+
+            </div>
+
+
+            <!-- GUESTS -->
+
+            <div class="field">
+
+              <label
+                data-i18n="guests">
+                Сколько гостей будет помимо вас?
+              </label>
+
+              <div class="guests-control">
+
+                <button
+                  type="button"
+                  class="guest-button"
+                  onclick="changeGuests(-1)">
+                  −
+                </button>
+
+                <span
+                  class="guest-number"
+                  id="guestNumber">
+                  0
+                </span>
+
+                <button
+                  type="button"
+                  class="guest-button"
+                  onclick="changeGuests(1)">
+                  +
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="submit"
+              id="submitButton"
+              data-i18n="submit">
+              ПОДТВЕРДИТЬ
+            </button>
+
+            <div
+              class="error-message"
+              id="errorMessage">
+            </div>
+
+          </form>
+
+
+          <div
+            class="private"
+            data-i18n="privateEvent">
+            Private event · LooLoo
           </div>
 
         </div>
 
-        <p class="description">
-          Ночная вечеринка LooLoo.<br><br>
-          Вход только для наших клиентов.
-          Никакого dress code.
-          Просто приходи.
-        </p>
 
-        <div class="private">
-          Private event · LooLoo
+        <!-- =========================
+             SUCCESS MESSAGE
+        ========================= -->
+
+        <div
+          class="success"
+          id="success">
+
+          <div class="success-mark">
+            ✓
+          </div>
+
+          <h2
+            class="success-title"
+            data-i18n="successTitle">
+            Готово.
+          </h2>
+
+          <p
+            class="success-text"
+            data-i18n="successText">
+            Ты в списке.<br>
+            До встречи 20 сентября.
+          </p>
+
         </div>
 
-        <button class="back" onclick="backToStart()">
+
+        <button
+          class="back"
+          onclick="backToStart()"
+          data-i18n="back">
           ← назад
         </button>
 
@@ -365,14 +1086,522 @@
 
   </main>
 
+
   <script>
-    function enterParty() {
-      document.getElementById('details').classList.add('active');
+
+    /* ==========================================
+       GOOGLE APPS SCRIPT URL
+    ========================================== */
+
+    const SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbxx2uuwGsr_3Ak7nbI4ihyKhCIfZZFzIcaA6Du3iySEmecQ54yPBwyp-BEO_AEY6Eyyhg/exec";
+
+
+    /* ==========================================
+       LANGUAGE DATA
+    ========================================== */
+
+    const translations = {
+
+      ru: {
+
+        privateInvitation:
+          "Private invitation",
+
+        clientsOnly:
+          "Только для наших клиентов",
+
+        enter:
+          "ENTER",
+
+        youAreOnList:
+          "Ты в списке.",
+
+        eventDescription:
+          "Ночная вечеринка LooLoo.<br><br>Вход только для наших клиентов.<br>Никакого dress code.",
+
+        date:
+          "Дата",
+
+        start:
+          "Начало",
+
+        confirmAttendance:
+          "Подтверди своё присутствие",
+
+        name:
+          "Имя",
+
+        namePlaceholder:
+          "Введите имя",
+
+        phone:
+          "Телефон",
+
+        phonePlaceholder:
+          "+374 ...",
+
+        guests:
+          "Сколько гостей будет помимо вас?",
+
+        submit:
+          "ПОДТВЕРДИТЬ",
+
+        privateEvent:
+          "Private event · LooLoo",
+
+        successTitle:
+          "Готово.",
+
+        successText:
+          "Ты в списке.<br>До встречи 20 сентября.",
+
+        back:
+          "← назад",
+
+        sending:
+          "ОТПРАВКА...",
+
+        error:
+          "Не удалось отправить заявку. Попробуйте ещё раз."
+
+      },
+
+
+      en: {
+
+        privateInvitation:
+          "Private invitation",
+
+        clientsOnly:
+          "For our clients only",
+
+        enter:
+          "ENTER",
+
+        youAreOnList:
+          "You're on the list.",
+
+        eventDescription:
+          "LooLoo night party.<br><br>Entry for our clients only.<br>No dress code.",
+
+        date:
+          "Date",
+
+        start:
+          "Starts",
+
+        confirmAttendance:
+          "Confirm your attendance",
+
+        name:
+          "Name",
+
+        namePlaceholder:
+          "Enter your name",
+
+        phone:
+          "Phone",
+
+        phonePlaceholder:
+          "+374 ...",
+
+        guests:
+          "How many guests besides you?",
+
+        submit:
+          "CONFIRM",
+
+        privateEvent:
+          "Private event · LooLoo",
+
+        successTitle:
+          "Done.",
+
+        successText:
+          "You're on the list.<br>See you on September 20.",
+
+        back:
+          "← back",
+
+        sending:
+          "SENDING...",
+
+        error:
+          "Something went wrong. Please try again."
+
+      },
+
+
+      hy: {
+
+        privateInvitation:
+          "Գաղտնի հրավեր",
+
+        clientsOnly:
+          "Միայն մեր հաճախորդների համար",
+
+        enter:
+          "ՄՈՒՏՔ",
+
+        youAreOnList:
+          "Դու ցուցակում ես։",
+
+        eventDescription:
+          "LooLoo-ի գիշերային երեկույթ։<br><br>Մուտքը միայն մեր հաճախորդների համար է։<br>Դրես կոդ չկա։",
+
+        date:
+          "Ամսաթիվ",
+
+        start:
+          "Սկիզբ",
+
+        confirmAttendance:
+          "Հաստատիր քո ներկայությունը",
+
+        name:
+          "Անուն",
+
+        namePlaceholder:
+          "Գրիր քո անունը",
+
+        phone:
+          "Հեռախոս",
+
+        phonePlaceholder:
+          "+374 ...",
+
+        guests:
+          "Քեզնից բացի քանի՞ հյուր է լինելու։",
+
+        submit:
+          "ՀԱՍՏԱՏԵԼ",
+
+        privateEvent:
+          "Private event · LooLoo",
+
+        successTitle:
+          "Պատրաստ է։",
+
+        successText:
+          "Դու ցուցակում ես։<br>Կհանդիպենք սեպտեմբերի 20-ին։",
+
+        back:
+          "← հետ",
+
+        sending:
+          "ՈՒՂԱՐԿՈՒՄ...",
+
+        error:
+          "Չհաջողվեց ուղարկել հայտը։ Փորձիր կրկին։"
+
+      }
+
+    };
+
+
+    /* ==========================================
+       CURRENT LANGUAGE
+    ========================================== */
+
+    let currentLanguage = "ru";
+
+    let guestCount = 0;
+
+
+    /* ==========================================
+       SET LANGUAGE
+    ========================================== */
+
+    function setLanguage(lang) {
+
+      if (!translations[lang]) {
+        return;
+      }
+
+      currentLanguage = lang;
+
+      document.documentElement.lang =
+        lang === "hy" ? "hy" : lang;
+
+      const dictionary =
+        translations[lang];
+
+
+      /* TEXT */
+
+      document
+        .querySelectorAll("[data-i18n]")
+        .forEach(element => {
+
+          const key =
+            element.dataset.i18n;
+
+          if (dictionary[key] !== undefined) {
+
+            element.innerHTML =
+              dictionary[key];
+
+          }
+
+        });
+
+
+      /* PLACEHOLDERS */
+
+      document
+        .querySelectorAll("[data-placeholder]")
+        .forEach(element => {
+
+          const key =
+            element.dataset.placeholder;
+
+          if (dictionary[key] !== undefined) {
+
+            element.placeholder =
+              dictionary[key];
+
+          }
+
+        });
+
+
+      /* ACTIVE LANGUAGE */
+
+      document
+        .querySelectorAll(".language")
+        .forEach(button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.lang === lang
+          );
+
+        });
+
     }
 
-    function backToStart() {
-      document.getElementById('details').classList.remove('active');
+
+    /* ==========================================
+       OPEN DETAILS
+    ========================================== */
+
+    function enterParty() {
+
+      document
+        .getElementById("details")
+        .classList.add("active");
+
+      document.body.style.overflow =
+        "hidden";
+
     }
+
+
+    /* ==========================================
+       BACK
+    ========================================== */
+
+    function backToStart() {
+
+      document
+        .getElementById("details")
+        .classList.remove("active");
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    /* ==========================================
+       GUEST COUNTER
+    ========================================== */
+
+    function changeGuests(amount) {
+
+      guestCount += amount;
+
+      if (guestCount < 0) {
+        guestCount = 0;
+      }
+
+      if (guestCount > 20) {
+        guestCount = 20;
+      }
+
+      document
+        .getElementById("guestNumber")
+        .textContent = guestCount;
+
+    }
+
+
+    /* ==========================================
+       FORM SUBMISSION
+    ========================================== */
+
+    async function submitForm(event) {
+
+      event.preventDefault();
+
+
+      const form =
+        document.getElementById("rsvpForm");
+
+      const button =
+        document.getElementById("submitButton");
+
+      const errorMessage =
+        document.getElementById("errorMessage");
+
+      const name =
+        document
+          .getElementById("name")
+          .value
+          .trim();
+
+      const phone =
+        document
+          .getElementById("phone")
+          .value
+          .trim();
+
+
+      /* RESET ERROR */
+
+      errorMessage.classList.remove(
+        "active"
+      );
+
+      errorMessage.textContent = "";
+
+
+      /* BASIC VALIDATION */
+
+      if (!name || !phone) {
+
+        errorMessage.textContent =
+          translations[currentLanguage].error;
+
+        errorMessage.classList.add(
+          "active"
+        );
+
+        return;
+      }
+
+
+      /* LOADING */
+
+      button.disabled = true;
+
+      button.textContent =
+        translations[currentLanguage].sending;
+
+
+      const data = {
+
+        name: name,
+
+        phone: phone,
+
+        guests: guestCount,
+
+        language: currentLanguage
+
+      };
+
+
+      try {
+
+        /*
+          no-cors нужен потому,
+          что Google Apps Script
+          находится на другом домене.
+        */
+
+        await fetch(
+          SCRIPT_URL,
+          {
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify(data)
+          }
+        );
+
+
+        /*
+          При no-cors браузер не позволяет
+          прочитать ответ сервера.
+
+          Поэтому после успешной отправки
+          показываем экран подтверждения.
+        */
+
+        form.style.display =
+          "none";
+
+        document
+          .querySelector(".form-title")
+          .style.display = "none";
+
+        document
+          .querySelector(".private")
+          .style.display = "none";
+
+        document
+          .querySelector(".info")
+          .style.display = "none";
+
+        document
+          .querySelector(".event-description")
+          .style.display = "none";
+
+        document
+          .querySelector(".welcome")
+          .style.display = "none";
+
+
+        document
+          .getElementById("success")
+          .classList.add("active");
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        button.disabled = false;
+
+        button.textContent =
+          translations[currentLanguage].submit;
+
+        errorMessage.textContent =
+          translations[currentLanguage].error;
+
+        errorMessage.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       INITIAL LANGUAGE
+    ========================================== */
+
+    setLanguage("ru");
+
   </script>
 
 </body>
