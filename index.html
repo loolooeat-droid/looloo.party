@@ -2,22 +2,49 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <title>LooLoo — Secret Night</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <title>LooLoo Club</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
     :root {
       --green: #101b16;
-      --green-light: #18251e;
+      --green-2: #15231c;
+      --green-3: #1b2b23;
+
       --cream: #eee9dc;
-      --muted: #b4a476;
-      --line: rgba(238, 233, 220, 0.14);
+      --cream-soft: rgba(238, 233, 220, 0.68);
+      --cream-muted: rgba(238, 233, 220, 0.38);
+
+      --gold: #b4a476;
+      --gold-soft: rgba(180, 164, 118, 0.25);
+
+      --line: rgba(238, 233, 220, 0.12);
+
+      --ease: cubic-bezier(.22,.61,.36,1);
     }
+
+
+    /* =========================================================
+       RESET
+    ========================================================= */
 
     * {
       box-sizing: border-box;
@@ -25,16 +52,18 @@
       padding: 0;
     }
 
-    html,
-    body {
-      width: 100%;
-      min-height: 100%;
+    html {
+      scroll-behavior: smooth;
       background: var(--green);
-      color: var(--cream);
-      font-family: "DM Sans", sans-serif;
     }
 
     body {
+      min-height: 100%;
+      background: var(--green);
+      color: var(--cream);
+
+      font-family: "DM Sans", sans-serif;
+
       overflow-x: hidden;
     }
 
@@ -47,441 +76,1396 @@
       cursor: pointer;
     }
 
-    /* =========================
-       BACKGROUND
-    ========================= */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    body::before {
+
+    /* =========================================================
+       GRAIN
+    ========================================================= */
+
+    body::after {
       content: "";
+
       position: fixed;
       inset: 0;
+
       pointer-events: none;
-      z-index: 100;
-      opacity: 0.035;
+
+      z-index: 999;
+
+      opacity: .035;
+
       background-image:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
     }
 
-    /* =========================
-       LANGUAGE SWITCHER
-    ========================= */
+
+    /* =========================================================
+       APP
+    ========================================================= */
+
+    #app {
+      min-height: 100vh;
+      position: relative;
+    }
+
+
+    /* =========================================================
+       LANGUAGE
+    ========================================================= */
 
     .language-switcher {
       position: fixed;
-      top: max(22px, env(safe-area-inset-top));
+
+      top: max(20px, env(safe-area-inset-top));
       right: 22px;
-      z-index: 200;
+
+      z-index: 900;
+
       display: flex;
-      gap: 7px;
+      gap: 6px;
     }
 
     .lang-btn {
-      border: 1px solid rgba(238, 233, 220, 0.16);
-      background: rgba(16, 27, 22, 0.7);
-      color: rgba(238, 233, 220, 0.48);
+      border: 1px solid rgba(238,233,220,.15);
+
+      background: rgba(16,27,22,.72);
+
+      color: rgba(238,233,220,.4);
+
       padding: 6px 9px;
-      font-size: 10px;
-      letter-spacing: 0.12em;
+
+      font-size: 9px;
+      letter-spacing: .12em;
+
       border-radius: 20px;
-      transition: all 0.25s ease;
+
+      transition:
+        color .3s ease,
+        border-color .3s ease,
+        background .3s ease;
     }
 
     .lang-btn:hover,
     .lang-btn.active {
       color: var(--cream);
-      border-color: rgba(238, 233, 220, 0.4);
-      background: rgba(238, 233, 220, 0.07);
+
+      border-color:
+        rgba(238,233,220,.4);
+
+      background:
+        rgba(238,233,220,.06);
     }
 
-    /* =========================
-       COMMON
-    ========================= */
 
-    .screen {
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .top-nav {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--green);
+
+      top: 22px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      z-index: 800;
+
+      display: flex;
+      align-items: center;
+
+      gap: 25px;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity .5s ease,
+        transform .5s ease;
     }
 
-    /* =========================
-       LANDING
-    ========================= */
+    .top-nav.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-    .landing {
-      z-index: 10;
+    .nav-link {
+      position: relative;
+
+      border: 0;
+      background: none;
+
+      color: rgba(238,233,220,.43);
+
+      font-size: 9px;
+      letter-spacing: .16em;
+
+      text-transform: uppercase;
+
+      white-space: nowrap;
+
+      transition: color .25s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: -6px;
+
+      height: 1px;
+
+      background: var(--gold);
+
+      transform:
+        scaleX(0);
+
+      transform-origin: center;
+
+      transition:
+        transform .3s var(--ease);
+    }
+
+    .nav-link:hover {
+      color: var(--cream);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+
+    /* =========================================================
+       MAIN
+    ========================================================= */
+
+    .main-page {
+      min-height: 100vh;
+
+      opacity: 1;
+
+      transition:
+        opacity .45s ease,
+        transform .45s var(--ease);
+    }
+
+    .main-page.page-hidden {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+      min-height: 100vh;
+
+      position: relative;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       overflow: hidden;
-      transition:
-        opacity 0.7s ease,
-        transform 0.7s ease,
-        visibility 0.7s ease;
+
+      padding:
+        100px 25px
+        80px;
     }
 
-    .landing.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(1.03);
-    }
-
-    .landing::before {
-      content: "";
+    .hero-glow {
       position: absolute;
-      width: 75vw;
-      height: 75vw;
-      max-width: 800px;
-      max-height: 800px;
+
+      width: 720px;
+      height: 720px;
+
+      max-width: 90vw;
+      max-height: 90vw;
+
       border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(96, 116, 87, 0.12) 0%,
-        rgba(96, 116, 87, 0.03) 40%,
-        transparent 70%
-      );
-      filter: blur(10px);
-      animation: glow 8s ease-in-out infinite alternate;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(91,107,82,.15),
+          rgba(91,107,82,.035) 42%,
+          transparent 70%
+        );
+
+      filter: blur(12px);
+
+      animation:
+        heroGlow 10s ease-in-out infinite alternate;
     }
 
-    @keyframes glow {
+    @keyframes heroGlow {
+
       from {
-        transform: scale(0.95);
-        opacity: 0.7;
+        transform: scale(.9);
+        opacity: .65;
       }
 
       to {
         transform: scale(1.08);
         opacity: 1;
       }
+
     }
 
-    .landing-inner {
+    .hero-content {
       position: relative;
+
       z-index: 2;
-      width: min(90%, 700px);
+
+      width: min(900px, 94%);
+
       text-align: center;
-      padding: 30px 20px;
     }
 
-    .logo {
+    .hero-logo {
       font-size: 13px;
-      letter-spacing: 0.42em;
-      font-weight: 500;
-      margin-bottom: 52px;
-      margin-left: 0.42em;
+
+      letter-spacing: .43em;
+
+      margin-left: .43em;
+
+      margin-bottom: 55px;
     }
 
-    .private-label {
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 0.24em;
+    .hero-kicker {
+      color: var(--gold);
+
+      font-size: 10px;
+
+      letter-spacing: .25em;
+
       text-transform: uppercase;
+
       margin-bottom: 22px;
-      line-height: 1.6;
     }
 
-    .landing-title {
+    .hero-title {
       font-family: "Playfair Display", serif;
-      font-size: clamp(64px, 12vw, 112px);
+
+      font-size: clamp(
+        70px,
+        13vw,
+        145px
+      );
+
+      line-height: .86;
+
       font-weight: 500;
-      line-height: 0.88;
-      letter-spacing: -0.04em;
-      margin-bottom: 30px;
+
+      letter-spacing: -.055em;
+
+      margin-bottom: 28px;
     }
 
-    .landing-date {
-      font-size: 12px;
-      letter-spacing: 0.25em;
-      color: rgba(238, 233, 220, 0.65);
-      margin-bottom: 46px;
+    .hero-subtitle {
+      max-width: 430px;
+
+      margin: 0 auto;
+
+      color: var(--cream-soft);
+
+      font-size: 13px;
+
+      line-height: 1.8;
     }
 
-    .enter-btn {
+    .hero-scroll {
+      position: absolute;
+
+      left: 50%;
+      bottom: 35px;
+
+      transform: translateX(-50%);
+
+      color: var(--cream-muted);
+
+      font-size: 8px;
+
+      letter-spacing: .25em;
+
+      text-transform: uppercase;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 11px;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 35px;
+
+      background:
+        linear-gradient(
+          to bottom,
+          var(--gold),
+          transparent
+        );
+
+      animation:
+        scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+
+      0%,
+      100% {
+        opacity: .25;
+        transform: scaleY(.7);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+
+    }
+
+
+    /* =========================================================
+       CONTENT
+    ========================================================= */
+
+    .content {
+      width: min(1100px, 92%);
+
+      margin: 0 auto;
+
+      padding-bottom: 120px;
+    }
+
+    .section {
+      margin-bottom: 125px;
+
+      scroll-margin-top: 100px;
+    }
+
+    .section-heading {
+      display: flex;
+
+      align-items: baseline;
+      justify-content: space-between;
+
+      border-bottom: 1px solid var(--line);
+
+      padding-bottom: 17px;
+
+      margin-bottom: 28px;
+    }
+
+    .section-label {
+      color: var(--gold);
+
+      font-size: 9px;
+
+      letter-spacing: .22em;
+
+      text-transform: uppercase;
+    }
+
+    .section-number {
+      color: var(--cream-muted);
+
+      font-size: 9px;
+
+      letter-spacing: .15em;
+    }
+
+
+    /* =========================================================
+       SECRET NIGHT FEATURE
+    ========================================================= */
+
+    .secret-card {
       position: relative;
-      border: 1px solid rgba(238, 233, 220, 0.35);
-      background: transparent;
-      color: var(--cream);
-      min-width: 150px;
-      padding: 15px 30px;
-      font-size: 11px;
-      letter-spacing: 0.25em;
+
+      min-height: 440px;
+
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+
+      background:
+        radial-gradient(
+          circle at 80% 25%,
+          rgba(100,116,89,.2),
+          transparent 35%
+        ),
+        linear-gradient(
+          130deg,
+          #15231c,
+          #0d1712
+        );
+
+      display: flex;
+
+      align-items: flex-end;
+
       transition:
-        background 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.3s ease;
+        border-color .4s ease,
+        transform .5s var(--ease);
     }
 
-    .enter-btn:hover {
-      background: rgba(238, 233, 220, 0.08);
-      border-color: rgba(238, 233, 220, 0.65);
+    .secret-card:hover {
+      border-color:
+        rgba(180,164,118,.35);
+
+      transform: translateY(-4px);
+    }
+
+    .secret-card::before {
+      content: "20.09";
+
+      position: absolute;
+
+      top: 35px;
+      right: 40px;
+
+      font-family: "Playfair Display", serif;
+
+      font-size: 90px;
+
+      color: rgba(238,233,220,.035);
+
+      line-height: 1;
+    }
+
+    .secret-card-content {
+      position: relative;
+
+      z-index: 2;
+
+      padding: 45px;
+
+      max-width: 620px;
+    }
+
+    .secret-small {
+      color: var(--gold);
+
+      font-size: 9px;
+
+      letter-spacing: .2em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 18px;
+    }
+
+    .secret-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(
+        55px,
+        9vw,
+        92px
+      );
+
+      line-height: .88;
+
+      font-weight: 500;
+
+      margin-bottom: 25px;
+    }
+
+    .secret-description {
+      max-width: 390px;
+
+      color: var(--cream-soft);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+      margin-bottom: 28px;
+    }
+
+    .outline-button {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(238,233,220,.35);
+
+      background: transparent;
+
+      color: var(--cream);
+
+      padding: 14px 25px;
+
+      font-size: 9px;
+
+      letter-spacing: .2em;
+
+      text-transform: uppercase;
+
+      transition:
+        background .3s ease,
+        border-color .3s ease,
+        transform .3s ease;
+    }
+
+    .outline-button:hover {
+      background:
+        rgba(238,233,220,.08);
+
+      border-color:
+        rgba(238,233,220,.6);
+
       transform: translateY(-2px);
     }
 
-    .landing-hint {
-      margin-top: 34px;
-      color: rgba(238, 233, 220, 0.3);
+
+    /* =========================================================
+       WHAT'S NEW
+    ========================================================= */
+
+    .new-grid {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.35fr)
+        minmax(260px, .65fr);
+
+      gap: 20px;
+    }
+
+    .new-main {
+      min-height: 400px;
+
+      position: relative;
+
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+
+      background:
+        linear-gradient(
+          145deg,
+          #1a2921,
+          #0d1712
+        );
+
+      display: flex;
+
+      align-items: flex-end;
+
+      transition:
+        transform .5s var(--ease),
+        border-color .4s ease;
+    }
+
+    .new-main:hover {
+      transform: translateY(-4px);
+
+      border-color:
+        rgba(180,164,118,.3);
+    }
+
+    .new-main-bg {
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at 65% 30%,
+          rgba(180,164,118,.14),
+          transparent 30%
+        );
+
+      transition:
+        transform .8s var(--ease);
+    }
+
+    .new-main:hover .new-main-bg {
+      transform: scale(1.08);
+    }
+
+    .new-main-content {
+      position: relative;
+
+      z-index: 2;
+
+      padding: 38px;
+    }
+
+    .badge {
+      display: inline-block;
+
+      color: var(--green);
+
+      background: var(--gold);
+
+      padding: 6px 9px;
+
+      font-size: 8px;
+
+      letter-spacing: .17em;
+
+      margin-bottom: 18px;
+    }
+
+    .new-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(
+        38px,
+        5vw,
+        62px
+      );
+
+      font-weight: 500;
+
+      line-height: .95;
+
+      margin-bottom: 18px;
+    }
+
+    .new-description {
+      max-width: 400px;
+
+      color: var(--cream-soft);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+    }
+
+    .new-side {
+      border: 1px solid var(--line);
+
+      padding: 35px;
+
+      background:
+        rgba(238,233,220,.025);
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      min-height: 400px;
+
+      transition:
+        background .4s ease,
+        border-color .4s ease;
+    }
+
+    .new-side:hover {
+      background:
+        rgba(238,233,220,.045);
+
+      border-color:
+        rgba(180,164,118,.25);
+    }
+
+    .side-label {
+      color: var(--cream-muted);
+
       font-size: 9px;
-      letter-spacing: 0.18em;
+
+      letter-spacing: .2em;
+
       text-transform: uppercase;
     }
 
-    /* =========================
-       DETAILS SCREEN
-    ========================= */
+    .side-name {
+      font-family: "Playfair Display", serif;
 
-    .details {
+      font-size: 36px;
+
+      line-height: 1;
+
+      margin-bottom: 12px;
+    }
+
+    .side-text {
+      color: var(--cream-soft);
+
+      font-size: 11px;
+
+      line-height: 1.8;
+    }
+
+    .arrow {
+      align-self: flex-end;
+
+      font-size: 22px;
+
+      color: var(--gold);
+
+      transition:
+        transform .3s ease;
+    }
+
+    .new-side:hover .arrow {
+      transform:
+        translate(4px,-4px);
+    }
+
+
+    /* =========================================================
+       NEWS
+    ========================================================= */
+
+    .news-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .news-item {
+      display: grid;
+
+      grid-template-columns:
+        100px
+        1fr
+        35px;
+
+      gap: 25px;
+
+      align-items: center;
+
+      padding: 24px 0;
+
+      border-bottom: 1px solid var(--line);
+
+      transition:
+        padding-left .35s ease,
+        background .35s ease;
+    }
+
+    .news-item:hover {
+      padding-left: 12px;
+    }
+
+    .news-date {
+      color: var(--gold);
+
+      font-size: 9px;
+
+      letter-spacing: .12em;
+    }
+
+    .news-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: 22px;
+
+      margin-bottom: 5px;
+    }
+
+    .news-text {
+      color: var(--cream-muted);
+
+      font-size: 11px;
+
+      line-height: 1.6;
+    }
+
+    .news-arrow {
+      color: var(--cream-muted);
+
+      font-size: 18px;
+
+      transition:
+        color .3s ease,
+        transform .3s ease;
+    }
+
+    .news-item:hover .news-arrow {
+      color: var(--gold);
+
+      transform: translateX(4px);
+    }
+
+
+    /* =========================================================
+       EVENTS
+    ========================================================= */
+
+    .events-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 20px;
+    }
+
+    .event-card {
+      min-height: 260px;
+
+      border: 1px solid var(--line);
+
+      padding: 32px;
+
+      position: relative;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(238,233,220,.035),
+          rgba(238,233,220,.01)
+        );
+
+      transition:
+        transform .45s var(--ease),
+        border-color .35s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+
+      border-color:
+        rgba(180,164,118,.3);
+    }
+
+    .event-status {
+      color: var(--gold);
+
+      font-size: 8px;
+
+      letter-spacing: .18em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 50px;
+    }
+
+    .event-date {
+      position: absolute;
+
+      top: 27px;
+      right: 30px;
+
+      font-size: 10px;
+
+      color: var(--cream-muted);
+
+      letter-spacing: .12em;
+    }
+
+    .event-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: 38px;
+
+      line-height: .95;
+
+      margin-bottom: 15px;
+    }
+
+    .event-text {
+      color: var(--cream-soft);
+
+      font-size: 11px;
+
+      line-height: 1.7;
+
+      max-width: 350px;
+    }
+
+
+    /* =========================================================
+       BENEFITS
+    ========================================================= */
+
+    .benefits {
+      border: 1px solid var(--line);
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(180,164,118,.07),
+          transparent 45%
+        );
+    }
+
+    .benefit {
+      padding: 42px;
+
+      min-height: 210px;
+
+      border-bottom: 1px solid var(--line);
+
+      transition:
+        background .35s ease;
+    }
+
+    .benefit:nth-child(odd) {
+      border-right: 1px solid var(--line);
+    }
+
+    .benefit:nth-last-child(-n+2) {
+      border-bottom: 0;
+    }
+
+    .benefit:hover {
+      background:
+        rgba(238,233,220,.025);
+    }
+
+    .benefit-number {
+      color: var(--gold);
+
+      font-size: 9px;
+
+      letter-spacing: .15em;
+
+      margin-bottom: 25px;
+    }
+
+    .benefit-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: 30px;
+
+      margin-bottom: 12px;
+    }
+
+    .benefit-text {
+      color: var(--cream-soft);
+
+      font-size: 11px;
+
+      line-height: 1.75;
+
+      max-width: 360px;
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    .footer {
+      padding:
+
+        45px 20px
+        calc(45px + env(safe-area-inset-bottom));
+
+      border-top: 1px solid var(--line);
+
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 11px;
+
+      letter-spacing: .4em;
+
+      margin-left: .4em;
+
+      margin-bottom: 17px;
+    }
+
+    .footer-text {
+      color: var(--cream-muted);
+
+      font-size: 9px;
+
+      letter-spacing: .12em;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       SECRET NIGHT PAGE
+    ========================================================= */
+
+    .secret-page {
       position: fixed;
+
       inset: 0;
-      z-index: 20;
+
+      z-index: 700;
 
       background:
         radial-gradient(
           circle at 50% 35%,
-          rgba(91, 107, 82, 0.13),
+          rgba(91,107,82,.13),
           transparent 38%
         ),
         var(--green);
 
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-
-      text-align: center;
-
       overflow-y: auto;
-      overflow-x: hidden;
 
       opacity: 0;
       visibility: hidden;
-      transform: translateY(20px);
+
+      transform:
+        translateY(20px);
 
       transition:
-        opacity 0.7s ease,
-        transform 0.7s ease,
-        visibility 0.7s ease;
+        opacity .55s ease,
+        transform .55s var(--ease),
+        visibility .55s ease;
 
       -webkit-overflow-scrolling: touch;
     }
 
-    .details.active {
+    .secret-page.active {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+
+      transform:
+        translateY(0);
     }
 
-    /*
-      ВАЖНО:
-      Не используем margin:auto по вертикали.
-      Именно он мог поднимать короткий success-блок
-      и обрезать его сверху.
-    */
+    .secret-page-inner {
+      width: min(580px, 92%);
 
-    .details-inner {
-      position: relative;
-      width: min(92%, 580px);
+      min-height: 100%;
 
       margin: 0 auto;
 
-      padding-top: max(
-        90px,
-        calc(env(safe-area-inset-top) + 55px)
+      padding:
+        max(
+          90px,
+          calc(env(safe-area-inset-top) + 55px)
+        )
+        20px
+        90px;
+
+      text-align: center;
+    }
+
+    .secret-page-logo {
+      font-size: 12px;
+
+      letter-spacing: .38em;
+
+      margin-left: .38em;
+
+      margin-bottom: 45px;
+    }
+
+    .back-button {
+      position: fixed;
+
+      top: max(22px, env(safe-area-inset-top));
+      left: 22px;
+
+      z-index: 800;
+
+      border: 1px solid rgba(238,233,220,.15);
+
+      background:
+        rgba(16,27,22,.75);
+
+      color: rgba(238,233,220,.55);
+
+      padding: 8px 12px;
+
+      font-size: 9px;
+
+      letter-spacing: .15em;
+
+      transition:
+        color .25s ease,
+        border-color .25s ease;
+    }
+
+    .back-button:hover {
+      color: var(--cream);
+
+      border-color:
+        rgba(238,233,220,.4);
+    }
+
+    .secret-page-welcome {
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(
+        38px,
+        7vw,
+        58px
       );
 
-      padding-right: 20px;
-      padding-bottom: 90px;
-      padding-left: 20px;
+      line-height: 1;
 
-      min-height: 100%;
-    }
-
-    .details-logo {
-      font-size: 12px;
-      letter-spacing: 0.38em;
-      margin-left: 0.38em;
-      margin-bottom: 46px;
-    }
-
-    .welcome {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(36px, 7vw, 56px);
       font-weight: 500;
-      line-height: 1.05;
-      margin-bottom: 26px;
-    }
 
-    .description {
-      max-width: 430px;
-      margin: 0 auto 38px;
-      color: rgba(238, 233, 220, 0.65);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    /* =========================
-       EVENT INFO
-    ========================= */
-
-    .event-info {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      padding: 20px 0;
-      margin-bottom: 38px;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .info-label {
-      color: rgba(238, 233, 220, 0.35);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .info-value {
-      font-size: 13px;
-      letter-spacing: 0.08em;
-    }
-
-    /* =========================
-       FORM
-    ========================= */
-
-    .form-title {
-      font-family: "Playfair Display", serif;
-      font-size: 25px;
       margin-bottom: 25px;
     }
 
-    .form {
+    .secret-page-description {
+      color: var(--cream-soft);
+
+      font-size: 13px;
+
+      line-height: 1.8;
+
+      margin-bottom: 35px;
+    }
+
+    .secret-info {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 40px;
+
+      padding: 20px 0;
+
+      margin-bottom: 38px;
+
+      border-top: 1px solid var(--line);
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .secret-info-item {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 6px;
+    }
+
+    .secret-info-label {
+      color: var(--cream-muted);
+
+      font-size: 8px;
+
+      letter-spacing: .18em;
+
+      text-transform: uppercase;
+    }
+
+    .secret-info-value {
+      font-size: 13px;
+
+      letter-spacing: .08em;
+    }
+
+    .form-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: 25px;
+
+      margin-bottom: 25px;
+    }
+
+    .rsvp-form {
       width: 100%;
+
       max-width: 390px;
+
       margin: 0 auto;
     }
 
     .field {
-      position: relative;
       margin-bottom: 14px;
     }
 
     .field input {
       width: 100%;
+
       height: 52px;
-      border: 1px solid var(--line);
-      background: rgba(238, 233, 220, 0.035);
+
+      border:
+        1px solid var(--line);
+
+      background:
+        rgba(238,233,220,.035);
+
       color: var(--cream);
-      padding: 0 17px;
+
+      padding:
+        0 17px;
+
       outline: none;
+
       border-radius: 0;
-      transition: border-color 0.25s ease;
+
+      transition:
+        border-color .25s ease;
     }
 
     .field input::placeholder {
-      color: rgba(238, 233, 220, 0.34);
+      color:
+        rgba(238,233,220,.34);
     }
 
     .field input:focus {
-      border-color: rgba(238, 233, 220, 0.42);
+      border-color:
+        rgba(238,233,220,.45);
     }
-
-    /* =========================
-       GUEST COUNTER
-    ========================= */
 
     .guests-label {
       margin-top: 22px;
+
       margin-bottom: 10px;
-      color: rgba(238, 233, 220, 0.42);
+
+      color:
+        rgba(238,233,220,.42);
+
       font-size: 9px;
-      letter-spacing: 0.18em;
+
+      letter-spacing: .18em;
+
       text-transform: uppercase;
     }
 
     .guest-counter {
       display: flex;
+
       align-items: center;
       justify-content: center;
+
       gap: 24px;
+
       margin-bottom: 25px;
     }
 
     .counter-btn {
       width: 38px;
       height: 38px;
+
       border-radius: 50%;
+
       border: 1px solid var(--line);
+
       background: transparent;
+
       color: var(--cream);
+
       font-size: 20px;
+
       line-height: 1;
-      transition: background 0.2s ease;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease;
     }
 
     .counter-btn:hover {
-      background: rgba(238, 233, 220, 0.08);
+      background:
+        rgba(238,233,220,.08);
+
+      border-color:
+        rgba(238,233,220,.35);
     }
 
     .guest-number {
       width: 25px;
+
       text-align: center;
+
       font-size: 15px;
     }
 
     .submit-btn {
       width: 100%;
+
       height: 54px;
-      border: 1px solid rgba(238, 233, 220, 0.35);
+
+      border:
+        1px solid rgba(238,233,220,.35);
+
       background: var(--cream);
+
       color: var(--green);
+
       font-size: 10px;
-      letter-spacing: 0.2em;
+
+      letter-spacing: .2em;
+
       text-transform: uppercase;
+
       transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+        opacity .25s ease,
+        transform .25s ease;
     }
 
     .submit-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
+      opacity: .9;
+
+      transform:
+        translateY(-1px);
     }
 
     .submit-btn:disabled {
-      opacity: 0.45;
+      opacity: .45;
+
       cursor: default;
+
       transform: none;
     }
 
     .private-footer {
       margin-top: 42px;
-      color: rgba(238, 233, 220, 0.25);
+
+      color:
+        rgba(238,233,220,.25);
+
       font-size: 9px;
-      letter-spacing: 0.15em;
+
+      letter-spacing: .15em;
+
       text-transform: uppercase;
     }
 
-    /* =========================
+    .error-message {
+      display: none;
+
+      margin-top: 14px;
+
+      color: #c99b8f;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
+
+    /* =========================================================
        SUCCESS
-    ========================= */
+    ========================================================= */
 
     .success {
       display: none;
+
       width: 100%;
+
       max-width: 500px;
+
       margin: 0 auto;
 
-      /*
-        Дополнительное пространство сверху,
-        чтобы confirmation никогда не прилипал к верхнему краю.
-      */
       padding-top: 15px;
     }
 
@@ -492,285 +1476,1053 @@
     .success-mark {
       width: 58px;
       height: 58px;
-      border: 1px solid rgba(238, 233, 220, 0.35);
+
+      border:
+        1px solid rgba(238,233,220,.35);
+
       border-radius: 50%;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       margin: 0 auto 30px;
 
       font-size: 22px;
-      color: var(--muted);
+
+      color: var(--gold);
     }
 
     .success-title {
       font-family: "Playfair Display", serif;
-      font-size: clamp(40px, 8vw, 58px);
+
+      font-size: clamp(
+        40px,
+        8vw,
+        58px
+      );
+
       line-height: 1;
+
       font-weight: 500;
+
       margin-bottom: 26px;
     }
 
     .success-text {
       max-width: 440px;
+
       margin: 0 auto;
 
-      color: rgba(238, 233, 220, 0.68);
+      color: var(--cream-soft);
 
       font-size: 13px;
+
       line-height: 1.8;
     }
 
     .success-text b {
       color: var(--cream);
+
       font-weight: 500;
     }
 
-    /* =========================
-       ERROR
-    ========================= */
 
-    .error-message {
-      display: none;
-      margin-top: 14px;
-      color: #c99b8f;
-      font-size: 11px;
-      line-height: 1.5;
+    /* =========================================================
+       EASTER EGG
+    ========================================================= */
+
+    .easter-egg {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      background:
+        rgba(10,17,13,.96);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 30px;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition:
+        opacity .5s ease,
+        visibility .5s ease;
     }
 
-    .error-message.visible {
-      display: block;
+    .easter-egg.active {
+      opacity: 1;
+      visibility: visible;
     }
 
-    /* =========================
+    .egg-content {
+      max-width: 420px;
+    }
+
+    .egg-small {
+      color: var(--gold);
+
+      font-size: 9px;
+
+      letter-spacing: .25em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 25px;
+    }
+
+    .egg-title {
+      font-family: "Playfair Display", serif;
+
+      font-size: 52px;
+
+      line-height: .95;
+
+      margin-bottom: 20px;
+    }
+
+    .egg-text {
+      color: var(--cream-soft);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+      margin-bottom: 30px;
+    }
+
+
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
+
+    .reveal {
+      opacity: 0;
+
+      transform:
+        translateY(25px);
+
+      transition:
+        opacity .8s var(--ease),
+        transform .8s var(--ease);
+    }
+
+    .reveal.revealed {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+    /* =========================================================
        MOBILE
-    ========================= */
+    ========================================================= */
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
 
       .language-switcher {
-        top: max(16px, env(safe-area-inset-top));
+        top:
+          max(15px, env(safe-area-inset-top));
+
         right: 15px;
       }
 
-      .lang-btn {
-        padding: 5px 8px;
-        font-size: 9px;
+      .top-nav {
+        display: none;
       }
 
-      .landing-inner {
-        width: 92%;
-        padding: 25px 15px;
+      .hero {
+        padding:
+          90px 18px
+          80px;
       }
 
-      .logo {
+      .hero-logo {
         margin-bottom: 42px;
       }
 
-      .private-label {
-        font-size: 9px;
-        letter-spacing: 0.18em;
-        margin-bottom: 18px;
+      .hero-kicker {
+        font-size: 8px;
       }
 
-      .landing-title {
-        font-size: clamp(58px, 18vw, 88px);
+      .hero-title {
+        font-size:
+          clamp(
+            68px,
+            20vw,
+            100px
+          );
       }
 
-      .landing-date {
-        margin-bottom: 38px;
+      .content {
+        width: 92%;
+
+        padding-bottom: 80px;
       }
 
-      /*
-        На мобильном оставляем заметный верхний
-        отступ и нормальную прокрутку.
-      */
-      .details-inner {
+      .section {
+        margin-bottom: 85px;
+      }
+
+      .secret-card {
+        min-height: 410px;
+      }
+
+      .secret-card-content {
+        padding: 28px;
+      }
+
+      .secret-title {
+        font-size: 57px;
+      }
+
+      .new-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .new-main,
+      .new-side {
+        min-height: 340px;
+      }
+
+      .new-main-content,
+      .new-side {
+        padding: 28px;
+      }
+
+      .news-item {
+        grid-template-columns:
+          70px
+          1fr
+          20px;
+
+        gap: 12px;
+
+        padding: 20px 0;
+      }
+
+      .news-title {
+        font-size: 18px;
+      }
+
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event-card {
+        min-height: 230px;
+
+        padding: 28px;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .benefit {
+        min-height: 180px;
+
+        padding: 28px;
+
+        border-right: 0 !important;
+
+        border-bottom:
+          1px solid var(--line);
+      }
+
+      .benefit:last-child {
+        border-bottom: 0;
+      }
+
+      .secret-page-inner {
         width: 94%;
 
-        margin: 0 auto;
-
-        padding-top: max(
-          95px,
-          calc(env(safe-area-inset-top) + 60px)
-        );
-
-        padding-right: 15px;
-        padding-bottom: 65px;
-        padding-left: 15px;
+        padding:
+          max(
+            95px,
+            calc(env(safe-area-inset-top) + 60px)
+          )
+          15px
+          65px;
       }
 
-      .details-logo {
-        margin-bottom: 38px;
+      .back-button {
+        top:
+          max(16px, env(safe-area-inset-top));
+
+        left: 15px;
       }
 
-      .welcome {
-        font-size: 38px;
-      }
-
-      .description {
-        font-size: 12px;
-        margin-bottom: 32px;
-      }
-
-      .event-info {
+      .secret-info {
         gap: 28px;
-        margin-bottom: 32px;
       }
 
-      .form-title {
-        font-size: 23px;
-      }
-
-      .success {
-        padding-top: 10px;
-      }
-
-      .success-mark {
-        width: 54px;
-        height: 54px;
-        margin-bottom: 25px;
-      }
-
-      .success-title {
-        font-size: 42px;
-        margin-bottom: 23px;
-      }
-
-      .success-text {
-        font-size: 12px;
-        line-height: 1.75;
-      }
     }
 
-    /* =========================
-       VERY SMALL SCREENS
-    ========================= */
+
+    /* =========================================================
+       SMALL HEIGHT
+    ========================================================= */
 
     @media (max-height: 700px) {
 
-      .details-inner {
-        padding-top: max(
-          80px,
-          calc(env(safe-area-inset-top) + 45px)
-        );
-        padding-bottom: 55px;
-      }
-
-      .details-logo {
+      .hero-logo {
         margin-bottom: 30px;
       }
 
-      .welcome {
-        margin-bottom: 18px;
+      .hero-scroll {
+        display: none;
       }
 
-      .description {
-        margin-bottom: 25px;
+      .secret-page-inner {
+        padding-top:
+          max(
+            80px,
+            calc(env(safe-area-inset-top) + 45px)
+          );
       }
 
-      .event-info {
-        margin-bottom: 25px;
-      }
-
-      .success-title {
-        font-size: 38px;
-      }
     }
+
   </style>
 </head>
 
+
 <body>
 
-  <!-- =========================
-       LANGUAGE SWITCHER
-  ========================= -->
+
+  <!-- =======================================================
+       LANGUAGE
+  ======================================================== -->
 
   <div class="language-switcher">
-    <button class="lang-btn active" data-lang="ru">RU</button>
-    <button class="lang-btn" data-lang="en">EN</button>
-    <button class="lang-btn" data-lang="hy">ՀԱՅ</button>
+
+    <button
+      class="lang-btn active"
+      data-lang="ru"
+    >
+      RU
+    </button>
+
+    <button
+      class="lang-btn"
+      data-lang="en"
+    >
+      EN
+    </button>
+
+    <button
+      class="lang-btn"
+      data-lang="hy"
+    >
+      ՀԱՅ
+    </button>
+
   </div>
 
 
-  <!-- =========================
-       LANDING SCREEN
-  ========================= -->
+  <!-- =======================================================
+       NAVIGATION
+  ======================================================== -->
 
-  <section class="screen landing" id="landing">
+  <nav class="top-nav" id="topNav">
 
-    <div class="landing-inner">
+    <button
+      class="nav-link"
+      data-target="new"
+      data-i18n="navNew"
+    >
+      What's New
+    </button>
 
-      <div class="logo">
-        LOOLOO
+    <button
+      class="nav-link"
+      data-target="news"
+      data-i18n="navNews"
+    >
+      News
+    </button>
+
+    <button
+      class="nav-link"
+      data-target="events"
+      data-i18n="navEvents"
+    >
+      Events
+    </button>
+
+    <button
+      class="nav-link"
+      data-target="benefits"
+      data-i18n="navBenefits"
+    >
+      Benefits
+    </button>
+
+  </nav>
+
+
+  <!-- =======================================================
+       MAIN CLUB PAGE
+  ======================================================== -->
+
+  <main
+    class="main-page"
+    id="mainPage"
+  >
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-glow"></div>
+
+      <div class="hero-content">
+
+        <div
+          class="hero-logo"
+          id="heroLogo"
+        >
+          LOOLOO
+        </div>
+
+        <div
+          class="hero-kicker"
+          data-i18n="heroKicker"
+        >
+          PRIVATE SPACE
+        </div>
+
+        <h1 class="hero-title">
+          LooLoo<br>Club
+        </h1>
+
+        <p
+          class="hero-subtitle"
+          data-i18n="heroSubtitle"
+        >
+          Здесь появляются новые блюда,
+          события и вещи, о которых мы
+          ещё не рассказываем всем.
+        </p>
+
       </div>
+
 
       <div
-        class="private-label"
-        data-i18n="privateInvitation"
+        class="hero-scroll"
+        data-i18n="scroll"
       >
-        ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ
+        SCROLL
+
+        <div class="hero-scroll-line"></div>
+
       </div>
 
-      <h1 class="landing-title">
-        Secret<br>Night
-      </h1>
+    </section>
 
-      <div class="landing-date">
-        20.09 · 21:00
-      </div>
 
-      <button
-        class="enter-btn"
-        id="enterBtn"
-        data-i18n="enter"
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+      <!-- =================================================
+           SECRET NIGHT
+      ================================================== -->
+
+      <section
+        class="section reveal"
+        id="secret"
       >
-        ВОЙТИ
-      </button>
 
-      <div
-        class="landing-hint"
-        data-i18n="landingHint"
+        <div class="section-heading">
+
+          <div
+            class="section-label"
+            data-i18n="sectionEvent"
+          >
+            NEXT EVENT
+          </div>
+
+          <div class="section-number">
+            01
+          </div>
+
+        </div>
+
+
+        <div
+          class="secret-card"
+          id="secretCard"
+        >
+
+          <div class="secret-card-content">
+
+            <div
+              class="secret-small"
+              data-i18n="secretSmall"
+            >
+              FOR OUR GUESTS
+            </div>
+
+            <h2 class="secret-title">
+              Secret<br>Night
+            </h2>
+
+            <p
+              class="secret-description"
+              data-i18n="secretDescription"
+            >
+              Закрытая ночь LooLoo.
+              Только для наших гостей.
+              20 сентября · 21:00.
+            </p>
+
+            <button
+              class="outline-button"
+              id="openSecret"
+              data-i18n="openSecret"
+            >
+              ОТКРЫТЬ ПРИГЛАШЕНИЕ →
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           WHAT'S NEW
+      ================================================== -->
+
+      <section
+        class="section reveal"
+        id="new"
       >
-        ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ
-      </div>
+
+        <div class="section-heading">
+
+          <div
+            class="section-label"
+            data-i18n="sectionNew"
+          >
+            WHAT'S NEW
+          </div>
+
+          <div class="section-number">
+            02
+          </div>
+
+        </div>
+
+
+        <div class="new-grid">
+
+
+          <article class="new-main">
+
+            <div class="new-main-bg"></div>
+
+            <div class="new-main-content">
+
+              <div
+                class="badge"
+                data-i18n="newBadge"
+              >
+                NEW
+              </div>
+
+              <h2
+                class="new-title"
+                data-i18n="newTitle"
+              >
+                Бургер<br>с креветкой
+              </h2>
+
+              <p
+                class="new-description"
+                data-i18n="newDescription"
+              >
+                Креветки темпура, свежие овощи,
+                чеддер и spicy sauce.
+                Новый взгляд на знакомый формат.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article class="new-side">
+
+            <div
+              class="side-label"
+              data-i18n="sideLabel"
+            >
+              ALSO NEW
+            </div>
+
+            <div>
+
+              <div
+                class="side-name"
+                data-i18n="sideName"
+              >
+                Sesame<br>Cloud
+              </div>
+
+              <div
+                class="side-text"
+                data-i18n="sideText"
+              >
+                Кофе с воздушной сырной
+                пенкой и кунжутом.
+              </div>
+
+            </div>
+
+            <div class="arrow">
+              ↗
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           NEWS
+      ================================================== -->
+
+      <section
+        class="section reveal"
+        id="news"
+      >
+
+        <div class="section-heading">
+
+          <div
+            class="section-label"
+            data-i18n="sectionNews"
+          >
+            LOOLOO NEWS
+          </div>
+
+          <div class="section-number">
+            03
+          </div>
+
+        </div>
+
+
+        <div class="news-list">
+
+
+          <article class="news-item">
+
+            <div class="news-date">
+              19.09.26
+            </div>
+
+            <div>
+
+              <div
+                class="news-title"
+                data-i18n="news1Title"
+              >
+                Новый бургер
+              </div>
+
+              <div
+                class="news-text"
+                data-i18n="news1Text"
+              >
+                Тестируем новую позицию
+                с креветкой темпура.
+              </div>
+
+            </div>
+
+            <div class="news-arrow">
+              →
+            </div>
+
+          </article>
+
+
+          <article class="news-item">
+
+            <div class="news-date">
+              18.09.26
+            </div>
+
+            <div>
+
+              <div
+                class="news-title"
+                data-i18n="news2Title"
+              >
+                Secret Night
+              </div>
+
+              <div
+                class="news-text"
+                data-i18n="news2Text"
+              >
+                До закрытой вечеринки
+                осталось совсем немного.
+              </div>
+
+            </div>
+
+            <div class="news-arrow">
+              →
+            </div>
+
+          </article>
+
+
+          <article class="news-item">
+
+            <div class="news-date">
+              15.09.26
+            </div>
+
+            <div>
+
+              <div
+                class="news-title"
+                data-i18n="news3Title"
+              >
+                Новые напитки
+              </div>
+
+              <div
+                class="news-text"
+                data-i18n="news3Text"
+              >
+                На кухне и за баром
+                продолжаем тестировать новое.
+              </div>
+
+            </div>
+
+            <div class="news-arrow">
+              →
+            </div>
+
+          </article>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           EVENTS
+      ================================================== -->
+
+      <section
+        class="section reveal"
+        id="events"
+      >
+
+        <div class="section-heading">
+
+          <div
+            class="section-label"
+            data-i18n="sectionEvents"
+          >
+            EVENTS
+          </div>
+
+          <div class="section-number">
+            04
+          </div>
+
+        </div>
+
+
+        <div class="events-grid">
+
+
+          <article
+            class="event-card"
+            id="eventSecret"
+          >
+
+            <div
+              class="event-status"
+              data-i18n="eventStatus"
+            >
+              NEXT
+            </div>
+
+            <div class="event-date">
+              20.09 · 21:00
+            </div>
+
+            <h3 class="event-title">
+              Secret<br>Night
+            </h3>
+
+            <p
+              class="event-text"
+              data-i18n="eventText"
+            >
+              Закрытая вечеринка
+              LooLoo для наших гостей.
+              Адрес будет отправлен
+              накануне мероприятия.
+            </p>
+
+          </article>
+
+
+          <article class="event-card">
+
+            <div
+              class="event-status"
+              data-i18n="comingSoon"
+            >
+              COMING SOON
+            </div>
+
+            <h3
+              class="event-title"
+              data-i18n="eventComingTitle"
+            >
+              Something<br>else.
+            </h3>
+
+            <p
+              class="event-text"
+              data-i18n="eventComingText"
+            >
+              Следующее мероприятие
+              появится здесь первым.
+            </p>
+
+          </article>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           BENEFITS
+      ================================================== -->
+
+      <section
+        class="section reveal"
+        id="benefits"
+      >
+
+        <div class="section-heading">
+
+          <div
+            class="section-label"
+            data-i18n="sectionBenefits"
+          >
+            YOUR BENEFITS
+          </div>
+
+          <div class="section-number">
+            05
+          </div>
+
+        </div>
+
+
+        <div class="benefits">
+
+
+          <article class="benefit">
+
+            <div class="benefit-number">
+              01
+            </div>
+
+            <h3
+              class="benefit-title"
+              data-i18n="benefit1Title"
+            >
+              10% cashback
+            </h3>
+
+            <p
+              class="benefit-text"
+              data-i18n="benefit1Text"
+            >
+              С каждой покупки
+              возвращаем 10% бонусами.
+            </p>
+
+          </article>
+
+
+          <article class="benefit">
+
+            <div class="benefit-number">
+              02
+            </div>
+
+            <h3
+              class="benefit-title"
+              data-i18n="benefit2Title"
+            >
+              До 50%
+            </h3>
+
+            <p
+              class="benefit-text"
+              data-i18n="benefit2Text"
+            >
+              Бонусами можно оплатить
+              до 50% следующего заказа.
+            </p>
+
+          </article>
+
+
+          <article class="benefit">
+
+            <div class="benefit-number">
+              03
+            </div>
+
+            <h3
+              class="benefit-title"
+              data-i18n="benefit3Title"
+            >
+              45 дней
+            </h3>
+
+            <p
+              class="benefit-text"
+              data-i18n="benefit3Text"
+            >
+              Бонусы действуют 45 дней.
+              Не откладывай следующий визит.
+            </p>
+
+          </article>
+
+
+          <article class="benefit">
+
+            <div class="benefit-number">
+              04
+            </div>
+
+            <h3
+              class="benefit-title"
+              data-i18n="benefit4Title"
+            >
+              Secret access
+            </h3>
+
+            <p
+              class="benefit-text"
+              data-i18n="benefit4Text"
+            >
+              Закрытые мероприятия,
+              специальные предложения
+              и новые вещи раньше остальных.
+            </p>
+
+          </article>
+
+
+        </div>
+
+      </section>
+
 
     </div>
 
-  </section>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <div class="footer-logo">
+        LOOLOO
+      </div>
+
+      <div
+        class="footer-text"
+        data-i18n="footerText"
+      >
+        PRIVATE SPACE · GYUMRI
+      </div>
+
+    </footer>
 
 
-  <!-- =========================
-       DETAILS SCREEN
-  ========================= -->
+  </main>
 
-  <section class="screen details" id="details">
 
-    <div class="details-inner">
+  <!-- =======================================================
+       SECRET NIGHT PAGE
+  ======================================================== -->
 
-      <div class="details-logo">
+  <section
+    class="secret-page"
+    id="secretPage"
+  >
+
+    <button
+      class="back-button"
+      id="backButton"
+      data-i18n="back"
+    >
+      ← НАЗАД
+    </button>
+
+
+    <div class="secret-page-inner">
+
+      <div class="secret-page-logo">
         LOOLOO
       </div>
 
 
-      <!-- =========================
-           FORM CONTENT
-      ========================= -->
+      <!-- FORM -->
 
-      <div id="formContent">
+      <div id="rsvpContent">
 
         <h2
-          class="welcome"
-          data-i18n="welcome"
+          class="secret-page-welcome"
+          data-i18n="rsvpWelcome"
         >
           Ты в списке.
         </h2>
 
+
         <div
-          class="description"
-          data-i18n="description"
+          class="secret-page-description"
+          data-i18n="rsvpDescription"
         >
           Ночная вечеринка LooLoo.<br><br>
           Вход только для наших гостей.<br>
@@ -778,33 +2530,37 @@
         </div>
 
 
-        <div class="event-info">
+        <div class="secret-info">
 
-          <div class="info-item">
+          <div class="secret-info-item">
+
             <span
-              class="info-label"
+              class="secret-info-label"
               data-i18n="dateLabel"
             >
               Дата
             </span>
 
-            <span class="info-value">
+            <span class="secret-info-value">
               20.09
             </span>
+
           </div>
 
 
-          <div class="info-item">
+          <div class="secret-info-item">
+
             <span
-              class="info-label"
+              class="secret-info-label"
               data-i18n="timeLabel"
             >
               Начало
             </span>
 
-            <span class="info-value">
+            <span class="secret-info-value">
               21:00
             </span>
+
           </div>
 
         </div>
@@ -818,9 +2574,14 @@
         </div>
 
 
-        <form class="form" id="rsvpForm">
+        <form
+          class="rsvp-form"
+          id="rsvpForm"
+        >
+
 
           <div class="field">
+
             <input
               type="text"
               id="name"
@@ -829,10 +2590,12 @@
               placeholder="Имя"
               required
             >
+
           </div>
 
 
           <div class="field">
+
             <input
               type="tel"
               id="phone"
@@ -841,6 +2604,7 @@
               placeholder="Телефон"
               required
             >
+
           </div>
 
 
@@ -895,25 +2659,25 @@
             id="errorMessage"
             data-i18n="error"
           >
-            Не удалось отправить заявку. Попробуй ещё раз.
+            Не удалось отправить заявку.
+            Попробуй ещё раз.
           </div>
 
+
+          <div
+            class="private-footer"
+            data-i18n="footer"
+          >
+            Закрытое мероприятие · LooLoo
+          </div>
+
+
         </form>
-
-
-        <div
-          class="private-footer"
-          data-i18n="footer"
-        >
-          Закрытое мероприятие · LooLoo
-        </div>
 
       </div>
 
 
-      <!-- =========================
-           SUCCESS SCREEN
-      ========================= -->
+      <!-- SUCCESS -->
 
       <div
         class="success"
@@ -949,9 +2713,56 @@
 
       </div>
 
+
     </div>
 
   </section>
+
+
+  <!-- =======================================================
+       EASTER EGG
+  ======================================================== -->
+
+  <div
+    class="easter-egg"
+    id="easterEgg"
+  >
+
+    <div class="egg-content">
+
+      <div
+        class="egg-small"
+        data-i18n="eggSmall"
+      >
+        YOU FOUND IT
+      </div>
+
+      <div
+        class="egg-title"
+        data-i18n="eggTitle"
+      >
+        Not everything<br>is on the menu.
+      </div>
+
+      <div
+        class="egg-text"
+        data-i18n="eggText"
+      >
+        Некоторые вещи LooLoo
+        лучше находить самостоятельно.
+      </div>
+
+      <button
+        class="outline-button"
+        id="closeEgg"
+        data-i18n="closeEgg"
+      >
+        ПРОДОЛЖИТЬ
+      </button>
+
+    </div>
+
+  </div>
 
 
   <script>
@@ -972,19 +2783,129 @@
 
       ru: {
 
-        privateInvitation:
-          "ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ",
+        navNew: "What's New",
+        navNews: "News",
+        navEvents: "Events",
+        navBenefits: "Benefits",
 
-        landingHint:
-          "ТОЛЬКО ДЛЯ НАШИХ ГОСТЕЙ",
+        heroKicker:
+          "PRIVATE SPACE",
 
-        enter:
-          "ВОЙТИ",
+        heroSubtitle:
+          "Здесь появляются новые блюда, события и вещи, о которых мы ещё не рассказываем всем.",
 
-        welcome:
+        scroll:
+          "SCROLL",
+
+        sectionEvent:
+          "NEXT EVENT",
+
+        secretSmall:
+          "FOR OUR GUESTS",
+
+        secretDescription:
+          "Закрытая ночь LooLoo. Только для наших гостей. 20 сентября · 21:00.",
+
+        openSecret:
+          "ОТКРЫТЬ ПРИГЛАШЕНИЕ →",
+
+        sectionNew:
+          "WHAT'S NEW",
+
+        newBadge:
+          "NEW",
+
+        newTitle:
+          "Бургер<br>с креветкой",
+
+        newDescription:
+          "Креветки темпура, свежие овощи, чеддер и spicy sauce. Новый взгляд на знакомый формат.",
+
+        sideLabel:
+          "ALSO NEW",
+
+        sideName:
+          "Sesame<br>Cloud",
+
+        sideText:
+          "Кофе с воздушной сырной пенкой и кунжутом.",
+
+        sectionNews:
+          "LOOLOO NEWS",
+
+        news1Title:
+          "Новый бургер",
+
+        news1Text:
+          "Тестируем новую позицию с креветкой темпура.",
+
+        news2Title:
+          "Secret Night",
+
+        news2Text:
+          "До закрытой вечеринки осталось совсем немного.",
+
+        news3Title:
+          "Новые напитки",
+
+        news3Text:
+          "На кухне и за баром продолжаем тестировать новое.",
+
+        sectionEvents:
+          "EVENTS",
+
+        eventStatus:
+          "NEXT",
+
+        eventText:
+          "Закрытая вечеринка LooLoo для наших гостей. Адрес будет отправлен накануне мероприятия.",
+
+        comingSoon:
+          "COMING SOON",
+
+        eventComingTitle:
+          "Something<br>else.",
+
+        eventComingText:
+          "Следующее мероприятие появится здесь первым.",
+
+        sectionBenefits:
+          "YOUR BENEFITS",
+
+        benefit1Title:
+          "10% cashback",
+
+        benefit1Text:
+          "С каждой покупки возвращаем 10% бонусами.",
+
+        benefit2Title:
+          "До 50%",
+
+        benefit2Text:
+          "Бонусами можно оплатить до 50% следующего заказа.",
+
+        benefit3Title:
+          "45 дней",
+
+        benefit3Text:
+          "Бонусы действуют 45 дней. Не откладывай следующий визит.",
+
+        benefit4Title:
+          "Secret access",
+
+        benefit4Text:
+          "Закрытые мероприятия, специальные предложения и новые вещи раньше остальных.",
+
+        footerText:
+          "PRIVATE SPACE · GYUMRI",
+
+        back:
+          "← НАЗАД",
+
+        rsvpWelcome:
           "Ты в списке.",
 
-        description:
+        rsvpDescription:
           "Ночная вечеринка LooLoo.<br><br>Вход только для наших гостей.<br>Никакого dress code.",
 
         dateLabel:
@@ -1018,26 +2939,148 @@
           "Ты в списке.",
 
         successText:
-          "Спасибо, что подтвердил своё присутствие.<br><br><b>Накануне вечеринки мы пришлём тебе адрес и всю необходимую информацию.</b><br><br>До встречи 20 сентября."
+          "Спасибо, что подтвердил своё присутствие.<br><br><b>Накануне вечеринки мы пришлём тебе адрес и всю необходимую информацию.</b><br><br>До встречи 20 сентября.",
+
+        eggSmall:
+          "YOU FOUND IT",
+
+        eggTitle:
+          "Not everything<br>is on the menu.",
+
+        eggText:
+          "Некоторые вещи LooLoo лучше находить самостоятельно.",
+
+        closeEgg:
+          "ПРОДОЛЖИТЬ"
 
       },
 
 
       en: {
 
-        privateInvitation:
-          "FOR OUR GUESTS ONLY",
+        navNew: "What's New",
+        navNews: "News",
+        navEvents: "Events",
+        navBenefits: "Benefits",
 
-        landingHint:
-          "FOR OUR GUESTS ONLY",
+        heroKicker:
+          "PRIVATE SPACE",
 
-        enter:
-          "ENTER",
+        heroSubtitle:
+          "New dishes, events and things we haven't told everyone about yet.",
 
-        welcome:
+        scroll:
+          "SCROLL",
+
+        sectionEvent:
+          "NEXT EVENT",
+
+        secretSmall:
+          "FOR OUR GUESTS",
+
+        secretDescription:
+          "A private night at LooLoo. For our guests only. September 20 · 21:00.",
+
+        openSecret:
+          "OPEN INVITATION →",
+
+        sectionNew:
+          "WHAT'S NEW",
+
+        newBadge:
+          "NEW",
+
+        newTitle:
+          "Shrimp<br>Burger",
+
+        newDescription:
+          "Tempura shrimp, fresh vegetables, cheddar and spicy sauce. A new take on a familiar format.",
+
+        sideLabel:
+          "ALSO NEW",
+
+        sideName:
+          "Sesame<br>Cloud",
+
+        sideText:
+          "Coffee with airy cheese foam and sesame.",
+
+        sectionNews:
+          "LOOLOO NEWS",
+
+        news1Title:
+          "New burger",
+
+        news1Text:
+          "Testing a new tempura shrimp burger.",
+
+        news2Title:
+          "Secret Night",
+
+        news2Text:
+          "Our private night is getting closer.",
+
+        news3Title:
+          "New drinks",
+
+        news3Text:
+          "We're still testing new things behind the bar and in the kitchen.",
+
+        sectionEvents:
+          "EVENTS",
+
+        eventStatus:
+          "NEXT",
+
+        eventText:
+          "A private LooLoo party for our guests. The address will be sent the day before.",
+
+        comingSoon:
+          "COMING SOON",
+
+        eventComingTitle:
+          "Something<br>else.",
+
+        eventComingText:
+          "The next event will appear here first.",
+
+        sectionBenefits:
+          "YOUR BENEFITS",
+
+        benefit1Title:
+          "10% cashback",
+
+        benefit1Text:
+          "Get 10% back in bonuses with every purchase.",
+
+        benefit2Title:
+          "Up to 50%",
+
+        benefit2Text:
+          "Use bonuses to cover up to 50% of your next order.",
+
+        benefit3Title:
+          "45 days",
+
+        benefit3Text:
+          "Bonuses are valid for 45 days.",
+
+        benefit4Title:
+          "Secret access",
+
+        benefit4Text:
+          "Private events, special offers and new things before everyone else.",
+
+        footerText:
+          "PRIVATE SPACE · GYUMRI",
+
+        back:
+          "← BACK",
+
+        rsvpWelcome:
           "You're on the list.",
 
-        description:
+        rsvpDescription:
           "A night at LooLoo.<br><br>For our guests only.<br>No dress code.",
 
         dateLabel:
@@ -1071,26 +3114,155 @@
           "You're on the list.",
 
         successText:
-          "Thank you for confirming your attendance.<br><br><b>We'll send you the address and all the details the day before the party.</b><br><br>See you on September 20."
+          "Thank you for confirming your attendance.<br><br><b>We'll send you the address and all the details the day before the party.</b><br><br>See you on September 20.",
+
+        eggSmall:
+          "YOU FOUND IT",
+
+        eggTitle:
+          "Not everything<br>is on the menu.",
+
+        eggText:
+          "Some things at LooLoo are better discovered by yourself.",
+
+        closeEgg:
+          "CONTINUE"
 
       },
 
 
       hy: {
 
-        privateInvitation:
-          "ՄԻԱՅՆ ՄԵՐ ՀՅՈՒՐԵՐԻ ՀԱՄԱՐ",
+        navNew:
+          "ՆՈՐՈՒԹՅՈՒՆՆԵՐ",
 
-        landingHint:
-          "ՄԻԱՅՆ ՄԵՐ ՀՅՈՒՐԵՐԻ ՀԱՄԱՐ",
+        navNews:
+          "ՆՈՐՈՒԹՅՈՒՆ",
 
-        enter:
-          "ՄՈՒՏՔ",
+        navEvents:
+          "ՄԻՋՈՑԱՌՈՒՄՆԵՐ",
 
-        welcome:
+        navBenefits:
+          "ԲՈՆՈՒՍՆԵՐ",
+
+        heroKicker:
+          "ՓԱԿ ՏԱՐԱԾՔ",
+
+        heroSubtitle:
+          "Այստեղ առաջինը հայտնվում են նոր ուտեստները, միջոցառումներն ու այն ամենը, ինչի մասին դեռ բոլորին չենք պատմում։",
+
+        scroll:
+          "SCROLL",
+
+        sectionEvent:
+          "ՄՈՏԱԿԱ ՄԻՋՈՑԱՌՈՒՄ",
+
+        secretSmall:
+          "ՄԵՐ ՀՅՈՒՐԵՐԻ ՀԱՄԱՐ",
+
+        secretDescription:
+          "Փակ երեկո LooLoo-ում։ Միայն մեր հյուրերի համար։ Սեպտեմբերի 20 · 21:00։",
+
+        openSecret:
+          "ԲԱՑԵԼ ՀՐԱՎԵՐԸ →",
+
+        sectionNew:
+          "ՆՈՐՈՒԹՅՈՒՆ",
+
+        newBadge:
+          "ՆՈՐ",
+
+        newTitle:
+          "Բուրգեր<br>ծովախեցգետնով",
+
+        newDescription:
+          "Տեմպուրա ծովախեցգետին, թարմ բանջարեղեն, չեդդեր և spicy sauce։",
+
+        sideLabel:
+          "ԵՎՍ ՄԵԿ ՆՈՐՈՒԹՅՈՒՆ",
+
+        sideName:
+          "Sesame<br>Cloud",
+
+        sideText:
+          "Սուրճ՝ թեթև պանրային փրփուրով և քունջութով։",
+
+        sectionNews:
+          "LOOLOO ՆՈՐՈՒԹՅՈՒՆՆԵՐ",
+
+        news1Title:
+          "Նոր բուրգեր",
+
+        news1Text:
+          "Փորձարկում ենք նոր բուրգեր՝ տեմպուրա ծովախեցգետնով։",
+
+        news2Title:
+          "Secret Night",
+
+        news2Text:
+          "Փակ երեկոյին մնացել է շատ քիչ ժամանակ։",
+
+        news3Title:
+          "Նոր ըմպելիքներ",
+
+        news3Text:
+          "Շարունակում ենք նոր բաներ փորձարկել խոհանոցում և բարում։",
+
+        sectionEvents:
+          "ՄԻՋՈՑԱՌՈՒՄՆԵՐ",
+
+        eventStatus:
+          "ՀԱՋՈՐԴԸ",
+
+        eventText:
+          "Փակ երեկույթ LooLoo-ի հյուրերի համար։ Հասցեն կուղարկենք միջոցառումից մեկ օր առաջ։",
+
+        comingSoon:
+          "ՇՈՒՏՈՎ",
+
+        eventComingTitle:
+          "Something<br>else.",
+
+        eventComingText:
+          "Հաջորդ միջոցառումն առաջինը կհայտնվի այստեղ։",
+
+        sectionBenefits:
+          "ՔՈ ԲՈՆՈՒՍՆԵՐԸ",
+
+        benefit1Title:
+          "10% cashback",
+
+        benefit1Text:
+          "Յուրաքանչյուր գնումից ստանում ես 10% բոնուս։",
+
+        benefit2Title:
+          "Մինչև 50%",
+
+        benefit2Text:
+          "Բոնուսներով կարող ես վճարել հաջորդ պատվերի մինչև 50%-ը։",
+
+        benefit3Title:
+          "45 օր",
+
+        benefit3Text:
+          "Բոնուսները գործում են 45 օր։",
+
+        benefit4Title:
+          "Secret access",
+
+        benefit4Text:
+          "Փակ միջոցառումներ, հատուկ առաջարկներ և նորություններ՝ մյուսներից շուտ։",
+
+        footerText:
+          "PRIVATE SPACE · GYUMRI",
+
+        back:
+          "← ՀԵՏ",
+
+        rsvpWelcome:
           "Դու ցուցակում ես։",
 
-        description:
+        rsvpDescription:
           "Գիշերային երեկույթ LooLoo-ում։<br><br>Մուտքը միայն մեր հյուրերի համար է։<br>Dress code չկա։",
 
         dateLabel:
@@ -1124,7 +3296,19 @@
           "Դու ցուցակում ես։",
 
         successText:
-          "Շնորհակալություն ներկայությունդ հաստատելու համար։<br><br><b>Երեկույթի նախորդ օրը քեզ կուղարկենք հասցեն և բոլոր անհրաժեշտ մանրամասները։</b><br><br>Կհանդիպենք սեպտեմբերի 20-ին։"
+          "Շնորհակալություն ներկայությունդ հաստատելու համար։<br><br><b>Երեկույթի նախորդ օրը քեզ կուղարկենք հասցեն և բոլոր անհրաժեշտ մանրամասները։</b><br><br>Կհանդիպենք սեպտեմբերի 20-ին։",
+
+        eggSmall:
+          "ԴՈՒ ԳՏԱՐ",
+
+        eggTitle:
+          "Ամեն ինչ չէ,<br>որ մենյուում է։",
+
+        eggText:
+          "Որոշ բաներ LooLoo-ում ավելի հետաքրքիր է գտնել ինքնուրույն։",
+
+        closeEgg:
+          "ՇԱՐՈՒՆԱԿԵԼ"
 
       }
 
@@ -1132,43 +3316,12 @@
 
 
     /* =========================================================
-       CURRENT LANGUAGE
+       STATE
     ========================================================= */
 
     let currentLanguage = "ru";
 
-
-    /* =========================================================
-       GUEST COUNTER
-    ========================================================= */
-
     let guests = 1;
-
-    const guestNumber =
-      document.getElementById("guestNumber");
-
-    document
-      .getElementById("minusBtn")
-      .addEventListener("click", () => {
-
-        if (guests > 1) {
-          guests--;
-          guestNumber.textContent = guests;
-        }
-
-      });
-
-
-    document
-      .getElementById("plusBtn")
-      .addEventListener("click", () => {
-
-        if (guests < 10) {
-          guests++;
-          guestNumber.textContent = guests;
-        }
-
-      });
 
 
     /* =========================================================
@@ -1185,7 +3338,6 @@
 
       const t = translations[lang];
 
-
       document.documentElement.lang = lang;
 
 
@@ -1193,10 +3345,19 @@
         .querySelectorAll("[data-i18n]")
         .forEach(element => {
 
-          const key = element.dataset.i18n;
+          const key =
+            element.dataset.i18n;
 
-          if (t[key] !== undefined) {
-            element.innerHTML = t[key];
+          if (
+            Object.prototype.hasOwnProperty.call(
+              t,
+              key
+            )
+          ) {
+
+            element.innerHTML =
+              t[key];
+
           }
 
         });
@@ -1206,10 +3367,19 @@
         .querySelectorAll("[data-placeholder]")
         .forEach(element => {
 
-          const key = element.dataset.placeholder;
+          const key =
+            element.dataset.placeholder;
 
-          if (t[key] !== undefined) {
-            element.placeholder = t[key];
+          if (
+            Object.prototype.hasOwnProperty.call(
+              t,
+              key
+            )
+          ) {
+
+            element.placeholder =
+              t[key];
+
           }
 
         });
@@ -1233,34 +3403,187 @@
       .querySelectorAll(".lang-btn")
       .forEach(button => {
 
-        button.addEventListener("click", () => {
-          setLanguage(button.dataset.lang);
-        });
+        button.addEventListener(
+          "click",
+          () => {
+
+            setLanguage(
+              button.dataset.lang
+            );
+
+          }
+        );
 
       });
 
 
     /* =========================================================
-       OPEN DETAILS
+       NAVIGATION
     ========================================================= */
 
+    const topNav =
+      document.getElementById("topNav");
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        if (
+          window.scrollY > 500
+        ) {
+
+          topNav.classList.add(
+            "visible"
+          );
+
+        } else {
+
+          topNav.classList.remove(
+            "visible"
+          );
+
+        }
+
+      },
+      { passive: true }
+    );
+
+
     document
-      .getElementById("enterBtn")
-      .addEventListener("click", () => {
+      .querySelectorAll(".nav-link")
+      .forEach(button => {
 
-        document
-          .getElementById("landing")
-          .classList.add("hidden");
+        button.addEventListener(
+          "click",
+          () => {
 
-        setTimeout(() => {
+            const target =
+              document.getElementById(
+                button.dataset.target
+              );
 
-          document
-            .getElementById("details")
-            .classList.add("active");
+            if (target) {
 
-        }, 250);
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+
+            }
+
+          }
+        );
 
       });
+
+
+    /* =========================================================
+       SECRET NIGHT OPEN
+    ========================================================= */
+
+    const secretPage =
+      document.getElementById("secretPage");
+
+    const mainPage =
+      document.getElementById("mainPage");
+
+
+    function openSecretPage() {
+
+      secretPage.classList.add(
+        "active"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+      secretPage.scrollTop = 0;
+
+    }
+
+
+    function closeSecretPage() {
+
+      secretPage.classList.remove(
+        "active"
+      );
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    document
+      .getElementById("openSecret")
+      .addEventListener(
+        "click",
+        openSecretPage
+      );
+
+
+    document
+      .getElementById("eventSecret")
+      .addEventListener(
+        "click",
+        openSecretPage
+      );
+
+
+    document
+      .getElementById("backButton")
+      .addEventListener(
+        "click",
+        closeSecretPage
+      );
+
+
+    /* =========================================================
+       GUEST COUNTER
+    ========================================================= */
+
+    const guestNumber =
+      document.getElementById(
+        "guestNumber"
+      );
+
+
+    document
+      .getElementById("minusBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (guests > 1) {
+
+            guests--;
+
+            guestNumber.textContent =
+              guests;
+
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById("plusBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (guests < 10) {
+
+            guests++;
+
+            guestNumber.textContent =
+              guests;
+
+          }
+
+        }
+      );
 
 
     /* =========================================================
@@ -1269,240 +3592,483 @@
 
     function sendToTelegram(data) {
 
-      return new Promise((resolve, reject) => {
+      return new Promise(
+        (resolve, reject) => {
 
-        const callbackName =
-          "telegramCallback_" +
-          Date.now() +
-          "_" +
-          Math.floor(Math.random() * 100000);
-
-
-        const timeout =
-          setTimeout(() => {
-
-            cleanup();
-
-            reject(
-              new Error("Request timeout")
+          const callbackName =
+            "telegramCallback_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+              Math.random() * 100000
             );
 
-          }, 15000);
+
+          const timeout =
+            setTimeout(
+              () => {
+
+                cleanup();
+
+                reject(
+                  new Error(
+                    "Request timeout"
+                  )
+                );
+
+              },
+              15000
+            );
 
 
-        function cleanup() {
+          function cleanup() {
 
-          clearTimeout(timeout);
+            clearTimeout(timeout);
+
+            const script =
+              document.getElementById(
+                callbackName
+              );
+
+            if (script) {
+              script.remove();
+            }
+
+            try {
+
+              delete window[
+                callbackName
+              ];
+
+            } catch (e) {
+
+              window[
+                callbackName
+              ] = undefined;
+
+            }
+
+          }
+
+
+          window[callbackName] =
+            function(response) {
+
+              cleanup();
+
+              resolve(response);
+
+            };
+
+
+          const params =
+            new URLSearchParams({
+
+              name:
+                data.name,
+
+              phone:
+                data.phone,
+
+              guests:
+                data.guests,
+
+              language:
+                data.language,
+
+              callback:
+                callbackName
+
+            });
+
 
           const script =
-            document.getElementById(callbackName);
-
-          if (script) {
-            script.remove();
-          }
-
-          try {
-            delete window[callbackName];
-          } catch (e) {
-            window[callbackName] = undefined;
-          }
-
-        }
+            document.createElement(
+              "script"
+            );
 
 
-        window[callbackName] = function(response) {
-
-          cleanup();
-
-          resolve(response);
-
-        };
+          script.id =
+            callbackName;
 
 
-        const params = new URLSearchParams({
-
-          name: data.name,
-
-          phone: data.phone,
-
-          guests: data.guests,
-
-          language: data.language,
-
-          callback: callbackName
-
-        });
+          script.src =
+            SCRIPT_URL +
+            "?" +
+            params.toString();
 
 
-        const script =
-          document.createElement("script");
+          script.onerror =
+            () => {
 
-        script.id = callbackName;
+              cleanup();
 
-        script.src =
-          SCRIPT_URL +
-          "?" +
-          params.toString();
+              reject(
+                new Error(
+                  "Network error"
+                )
+              );
+
+            };
 
 
-        script.onerror = () => {
-
-          cleanup();
-
-          reject(
-            new Error("Network error")
+          document.body.appendChild(
+            script
           );
 
-        };
-
-
-        document.body.appendChild(script);
-
-      });
+        }
+      );
 
     }
 
 
     /* =========================================================
-       FORM SUBMIT
+       RSVP FORM
     ========================================================= */
 
     document
       .getElementById("rsvpForm")
-      .addEventListener("submit", async function(event) {
+      .addEventListener(
+        "submit",
+        async function(event) {
 
-        event.preventDefault();
-
-
-        const name =
-          document
-            .getElementById("name")
-            .value
-            .trim();
+          event.preventDefault();
 
 
-        const phone =
-          document
-            .getElementById("phone")
-            .value
-            .trim();
-
-
-        const submitBtn =
-          document.getElementById("submitBtn");
-
-
-        const errorMessage =
-          document.getElementById("errorMessage");
-
-
-        if (!name || !phone) {
-          return;
-        }
-
-
-        submitBtn.disabled = true;
-
-        errorMessage.classList.remove("visible");
-
-
-        const originalText =
-          submitBtn.textContent;
-
-
-        submitBtn.textContent =
-          currentLanguage === "ru"
-            ? "ОТПРАВКА..."
-            : currentLanguage === "en"
-              ? "SENDING..."
-              : "ՈՒՂԱՐԿՈՒՄ...";
-
-
-        try {
-
-          const response =
-            await sendToTelegram({
-
-              name: name,
-
-              phone: phone,
-
-              guests: guests,
-
-              language: currentLanguage
-
-            });
-
-
-          /*
-            Показываем успех ТОЛЬКО если
-            Google Apps Script подтвердил,
-            что Telegram вернул ok:true.
-          */
-
-          if (
-            response &&
-            response.success === true
-          ) {
-
+          const name =
             document
-              .getElementById("formContent")
-              .style.display = "none";
+              .getElementById("name")
+              .value
+              .trim();
 
 
-            const success =
-              document.getElementById("success");
+          const phone =
+            document
+              .getElementById("phone")
+              .value
+              .trim();
 
 
-            success.classList.add("visible");
-
-
-            /*
-              После появления success
-              возвращаем скролл в самый верх,
-              чтобы текст никогда не оставался
-              обрезанным из-за предыдущей позиции.
-            */
-
-            const details =
-              document.getElementById("details");
-
-
-            requestAnimationFrame(() => {
-
-              details.scrollTop = 0;
-
-            });
-
-
-          } else {
-
-            throw new Error(
-              response && response.error
-                ? response.error
-                : "Telegram rejected request"
+          const submitBtn =
+            document.getElementById(
+              "submitBtn"
             );
+
+
+          const errorMessage =
+            document.getElementById(
+              "errorMessage"
+            );
+
+
+          if (!name || !phone) {
+            return;
+          }
+
+
+          submitBtn.disabled =
+            true;
+
+
+          errorMessage.classList.remove(
+            "visible"
+          );
+
+
+          const originalText =
+            submitBtn.textContent;
+
+
+          submitBtn.textContent =
+            currentLanguage === "ru"
+              ? "ОТПРАВКА..."
+              : currentLanguage === "en"
+                ? "SENDING..."
+                : "ՈՒՂԱՐԿՈՒՄ...";
+
+
+          try {
+
+            const response =
+              await sendToTelegram({
+
+                name:
+                  name,
+
+                phone:
+                  phone,
+
+                guests:
+                  guests,
+
+                language:
+                  currentLanguage
+
+              });
+
+
+            if (
+              response &&
+              response.success === true
+            ) {
+
+              document
+                .getElementById(
+                  "rsvpContent"
+                )
+                .style.display =
+                "none";
+
+
+              const success =
+                document.getElementById(
+                  "success"
+                );
+
+
+              success.classList.add(
+                "visible"
+              );
+
+
+              requestAnimationFrame(
+                () => {
+
+                  secretPage.scrollTop =
+                    0;
+
+                }
+              );
+
+
+            } else {
+
+              throw new Error(
+                response &&
+                response.error
+                  ? response.error
+                  : "Telegram rejected request"
+              );
+
+            }
+
+          } catch (error) {
+
+            console.error(error);
+
+            errorMessage.classList.add(
+              "visible"
+            );
+
+            submitBtn.disabled =
+              false;
+
+            submitBtn.textContent =
+              originalText;
 
           }
 
-        } catch (error) {
-
-          console.error(error);
-
-          errorMessage.classList.add("visible");
-
-          submitBtn.disabled = false;
-
-          submitBtn.textContent =
-            originalText;
-
         }
-
-      });
+      );
 
 
     /* =========================================================
-       INITIAL LANGUAGE
+       REVEAL ON SCROLL
+    ========================================================= */
+
+    const revealElements =
+      document.querySelectorAll(
+        ".reveal"
+      );
+
+
+    const revealObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              entry.target.classList.add(
+                "revealed"
+              );
+
+              revealObserver.unobserve(
+                entry.target
+              );
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+
+    revealElements.forEach(
+      element => {
+
+        revealObserver.observe(
+          element
+        );
+
+      }
+    );
+
+
+    /* =========================================================
+       EASTER EGG
+    ========================================================= */
+
+    const heroLogo =
+      document.getElementById(
+        "heroLogo"
+      );
+
+    const easterEgg =
+      document.getElementById(
+        "easterEgg"
+      );
+
+    let logoClicks = 0;
+
+    let logoTimer;
+
+
+    heroLogo.style.cursor =
+      "pointer";
+
+
+    heroLogo.addEventListener(
+      "click",
+      () => {
+
+        logoClicks++;
+
+
+        clearTimeout(
+          logoTimer
+        );
+
+
+        logoTimer =
+          setTimeout(
+            () => {
+
+              logoClicks = 0;
+
+            },
+            1500
+          );
+
+
+        if (logoClicks >= 5) {
+
+          logoClicks = 0;
+
+          easterEgg.classList.add(
+            "active"
+          );
+
+          document.body.style.overflow =
+            "hidden";
+
+        }
+
+      }
+    );
+
+
+    document
+      .getElementById("closeEgg")
+      .addEventListener(
+        "click",
+        () => {
+
+          easterEgg.classList.remove(
+            "active"
+          );
+
+          document.body.style.overflow =
+            "";
+
+        }
+      );
+
+
+    easterEgg.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          easterEgg
+        ) {
+
+          easterEgg.classList.remove(
+            "active"
+          );
+
+          document.body.style.overflow =
+            "";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       ESC KEY
+    ========================================================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          if (
+            easterEgg.classList.contains(
+              "active"
+            )
+          ) {
+
+            easterEgg.classList.remove(
+              "active"
+            );
+
+            document.body.style.overflow =
+              "";
+
+          }
+
+          if (
+            secretPage.classList.contains(
+              "active"
+            )
+          ) {
+
+            closeSecretPage();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       INITIALIZE
     ========================================================= */
 
     setLanguage("ru");
